@@ -2,6 +2,7 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { User } from './../_models/user';
 
 import { AlertService, AuthenticationService } from '@app/_services';
 
@@ -46,8 +47,12 @@ export class LoginComponent implements OnInit {
             return;
         }
 
+        let user: User = new User();
+        user.email = this.loginForm.value.email;
+        user.password = this.loginForm.value.password;
+
         this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
+        this.authenticationService.login(user.email,user.password)
             .pipe(first())
             .subscribe(
                 data => {

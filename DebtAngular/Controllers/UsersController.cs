@@ -45,11 +45,11 @@ namespace DebtAngular.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    var res = new ResultModel();
-                    res.ResultStatus = result.Succeeded;
-                    res.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, user));
+                    var resultModel = new ResultModel();
+                    resultModel.ResultStatus = result.Succeeded;
+                    resultModel.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, user));
 
-                    return Ok(res);
+                    return Ok(resultModel);
                 }
 
                 return Ok(result);
@@ -66,12 +66,20 @@ namespace DebtAngular.Controllers
         public async Task<object> Login( [FromBody] ApplicationUserModel applicationUserModel)
         {
             var result = await _signInManager.PasswordSignInAsync(applicationUserModel.Email, applicationUserModel.Password, false, false);
-
+            var resultModel = new ResultModel();
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == applicationUserModel.Email);
-                return await GenerateJwtToken(applicationUserModel.Email, appUser);
+                resultModel.ResultStatus = result.Succeeded;
+                resultModel.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, appUser));
+                return Ok(resultModel);
             }
+            else
+            {
+                resultModel.ResultStatus = result.IsNotAllowed;
+                return BadRequest(resultModel);
+            }
+
 
             throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
         }
