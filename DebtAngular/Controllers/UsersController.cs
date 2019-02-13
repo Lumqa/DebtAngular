@@ -52,7 +52,7 @@ namespace DebtAngular.Controllers
                     return Ok(resultModel);
                 }
 
-                return Ok(result);
+                return BadRequest(result);
                 //throw new ApplicationException("UNKNOWN_ERROR");
                 //return Ok(result);
             }
