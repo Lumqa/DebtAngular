@@ -45,7 +45,11 @@ namespace DebtAngular.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    return await GenerateJwtToken(applicationUserModel.Email, user);
+                    var res = new ResultModel();
+                    res.ResultStatus = result.Succeeded;
+                    res.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, user));
+
+                    return Ok(res);
                 }
 
                 return Ok(result);

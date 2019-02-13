@@ -14,4 +14,10 @@ namespace DebtAngular.Models
         [Required]
         public string Password { get; set; }
     }
+
+    public class ResultModel
+    {
+        public bool ResultStatus { get; set; }
+        public string Token { get; set; }
+    }
 }
