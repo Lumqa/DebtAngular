@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
                 data => {
                 this.alertService.success('Registration successful', true);
                 console.log(data);
-                localStorage.setItem('users', JSON.stringify(data.token));
+                localStorage.setItem('users', JSON.stringify(data['token']));
                     this.router.navigate(['/login']);
                 },
                 error => {
