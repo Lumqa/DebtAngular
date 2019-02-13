@@ -1,9 +1,11 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { User } from './../_models/user';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, UserService, AuthenticationService } from '@app/_services';
+import { userInfo } from 'os';
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -26,15 +28,29 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() {
         this.registerForm = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]]
+            email: ['', [Validators.email,Validators.required]],
+            passwords: this.formBuilder.group({
+                password: ['', [Validators.required, Validators.minLength(4)]],
+                confirmPassword: ['', Validators.required]
+              }, { validator: this.comparePasswords })
         });
     }
 
+    comparePasswords(fb: FormGroup) {
+        let confirmPswrdCtrl = fb.get('confirmPassword');
+        //passwordMismatch
+        //confirmPswrdCtrl.errors={passwordMismatch:true}
+        if (confirmPswrdCtrl.errors == null || 'passwordMismatch' in confirmPswrdCtrl.errors) {
+          if (fb.get('password').value != confirmPswrdCtrl.value)
+            confirmPswrdCtrl.setErrors({ passwordMismatch: true });
+          else
+            confirmPswrdCtrl.setErrors(null);
+        }
+      }
+
+
     // convenience getter for easy access to form fields
-    get f() { return this.registerForm.controls; }
+    get formField() { return this.registerForm.controls; }
 
     onSubmit() {
         this.submitted = true;
@@ -44,8 +60,15 @@ export class RegisterComponent implements OnInit {
             return;
         }
 
+        this.registerForm.value
+
+        let user: User = new User();
+        user.email = this.registerForm.value.email;
+        user.password = this.registerForm.value.passwords.password;
+
+
         this.loading = true;
-        this.userService.register(this.registerForm.value)
+        this.userService.register(user)
             .pipe(first())
             .subscribe(
                 data => {
