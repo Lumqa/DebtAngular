@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, UserService, AuthenticationService } from '@app/_services';
-import { userInfo } from 'os';
+//import { userInfo } from 'os';
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -72,7 +72,9 @@ export class RegisterComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', true);
+                this.alertService.success('Registration successful', true);
+                console.log(this);
+                localStorage.setItem('users', JSON.stringify('ff'));
                     this.router.navigate(['/login']);
                 },
                 error => {
