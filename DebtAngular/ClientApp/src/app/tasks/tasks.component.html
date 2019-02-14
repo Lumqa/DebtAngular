@@ -23,11 +23,11 @@
       </td>
       <td>
         <div *ngFor="let debtor of item['members']">
-          <a routerLink="debt" [queryParams]="{'taskId':item['id'], 'memberId':debtor['id']}">{{debtor['name']}}</a>
+          <a routerLink="/debts" [queryParams]="{'memberId':debtor['id']}">{{debtor['name']}}</a>
         </div>
       </td>
       <td class="removetask">
-        <button id="@item.Id" type="button" onclick="Delete(this)" class="btn btn-danger">×</button>
+        <button id="@item.Id" type="button" (click)="Delete(item)" class="btn btn-danger">×</button>
       </td>
     </tr>
   </tbody>

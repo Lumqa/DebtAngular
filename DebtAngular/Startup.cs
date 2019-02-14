@@ -77,6 +77,7 @@ namespace DebtAngular
 
 
             services.AddTransient<ITaskRepo, TaskRepo>();
+            services.AddTransient<IDebtRepo, DebtRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

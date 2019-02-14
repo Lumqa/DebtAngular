@@ -36,6 +36,13 @@ namespace DebtAngular.Models
         public string TaskId { get; set; }
     }
 
+
+    public class DebtViewModel
+    {
+        public string Name { get; set; }
+        public IEnumerable<DebtModel> Debts { get; set; }
+    }
+
 }
 
 

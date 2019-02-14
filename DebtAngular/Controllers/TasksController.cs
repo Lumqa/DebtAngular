@@ -12,9 +12,10 @@ namespace DebtAngular.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TasksController : ControllerBase
+    public class TasksController : Controller
     {
         private readonly ITaskRepo _taskRepo;
+        public string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
 
         public TasksController(ITaskRepo taskRepository)
         {
@@ -22,13 +23,30 @@ namespace DebtAngular.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Task>> Get()
+        public ActionResult<IEnumerable<Task>> Index()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
             var tasks = _taskRepo.GetAll(userId).ToList();
 
             var res = JsonConvert.SerializeObject(tasks);
             return Ok(tasks);
+        }
+
+        [HttpGet("AddOrEditTask/{id}")]
+        public IActionResult AddOrEditTask(Guid? id)
+        {
+            TaskModel task = new TaskModel
+            {
+                UserId = UserId,
+                Members = new List<MemberModel>()
+            };
+
+            if (id != null)
+            {
+                task = _taskRepo.GetValue(id ?? Guid.Empty, UserId);
+            }
+
+            return Ok(task);
         }
     }
 }
