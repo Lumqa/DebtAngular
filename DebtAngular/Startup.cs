@@ -2,6 +2,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using DebtAngular.Data;
+using DebtAngular.Data.Repositories.Abstract;
+using DebtAngular.Data.Repositories.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -74,6 +76,7 @@ namespace DebtAngular
                 });
 
 
+            services.AddTransient<ITaskRepo, TaskRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

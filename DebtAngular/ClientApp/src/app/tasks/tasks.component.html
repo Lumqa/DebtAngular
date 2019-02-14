@@ -1,0 +1,39 @@
+<table class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>
+        Имя
+      </th>
+      <th>
+        Сумма
+      </th>
+      <th>
+        Участники
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+
+        <!-- @Html.ActionLink(item.Name, "AddOrEditTask", "Tasks", new { id = i }) -->
+      </td>
+      <td>
+        <!-- @Html.DisplayFor(modelItem => item.Sum) -->
+      </td>
+      <td>
+        <!-- @foreach (var mem in item.Members)
+                    {
+                        @Html.ActionLink(mem.Name, "Index", "Debt", new { taskID = i, memberID = j })
+                        @:&nbsp;
+                        j++;
+                    }
+                    @{ j = 1; } -->
+      </td>
+      <td class="removetask">
+        <button id="@item.Id" type="button" onclick="Delete(this)" class="btn btn-danger">×</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<a class="btn btn-primary">Add new</a>

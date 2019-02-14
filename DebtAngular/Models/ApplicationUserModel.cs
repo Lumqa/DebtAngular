@@ -18,6 +18,7 @@ namespace DebtAngular.Models
     public class ResultModel
     {
         public bool ResultStatus { get; set; }
+        public string email { get; set; }
         public string Token { get; set; }
     }
 }

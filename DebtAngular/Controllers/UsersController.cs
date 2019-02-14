@@ -37,7 +37,7 @@ namespace DebtAngular.Controllers
             {
                 UserName = applicationUserModel.Email,
                 Email = applicationUserModel.Email
-            };
+            }; 
 
             try
             {
@@ -70,6 +70,7 @@ namespace DebtAngular.Controllers
             if (result.Succeeded)
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == applicationUserModel.Email);
+
                 resultModel.ResultStatus = result.Succeeded;
                 resultModel.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, appUser));
                 return Ok(resultModel);
@@ -90,6 +91,7 @@ namespace DebtAngular.Controllers
         [HttpGet]
         public async Task<object> Protected()
         {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
             return "Protected area";
         }
 
