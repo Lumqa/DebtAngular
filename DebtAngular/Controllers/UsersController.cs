@@ -92,7 +92,8 @@ namespace DebtAngular.Controllers
         public async Task<object> Protected()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
-            return "Protected area";
+            var user = await _userManager.FindByIdAsync(userId);
+            return user;
         }
 
         private async Task<object> GenerateJwtToken(string email, IdentityUser user)
