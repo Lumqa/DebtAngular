@@ -46,6 +46,7 @@ namespace DebtAngular.Controllers
                 {
                     await _signInManager.SignInAsync(user, false);
                     var resultModel = new ResultModel();
+                    resultModel.email = user.Email;
                     resultModel.ResultStatus = result.Succeeded;
                     resultModel.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, user));
 
@@ -71,6 +72,7 @@ namespace DebtAngular.Controllers
             {
                 var appUser = _userManager.Users.SingleOrDefault(r => r.Email == applicationUserModel.Email);
 
+                resultModel.email = appUser.Email;
                 resultModel.ResultStatus = result.Succeeded;
                 resultModel.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, appUser));
                 return Ok(resultModel);
