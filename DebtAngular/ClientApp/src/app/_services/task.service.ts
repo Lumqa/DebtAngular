@@ -15,4 +15,8 @@ export class TaskService {
     return this.http.get<Task[]>(`${environment.apiUrl}/tasks`);
   }
 
+  delete(id: string) {
+    return this.http.delete(`${environment.apiUrl}/tasks/${id}`);
+}
+
 }

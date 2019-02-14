@@ -15,6 +15,7 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { TasksComponent } from './tasks/tasks.component';
+import { DebtsComponent } from './debts/debts.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { TasksComponent } from './tasks/tasks.component';
         HomeComponent,
         LoginComponent,
         RegisterComponent,
-        TasksComponent
+        TasksComponent,
+        DebtsComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

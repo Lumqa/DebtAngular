@@ -2,6 +2,7 @@
 using DebtAngular.Models;
 using DebtAngular.Models.Mappings;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,10 +21,16 @@ namespace DebtAngular.Data.Repositories.Concrete
 
         public IEnumerable<TaskModel> GetAll(string userId)
         {
-
             var tasks = Tasks.Where(s => s.UserId == userId);
             List<TaskModel> taskModels = tasks.Select(t => t.Map()).ToList();
             return taskModels;
+        }
+
+        public void Delete(string taskId)
+        {
+            var task = Tasks.Where(t => t.Id == Guid.Parse(taskId)).FirstOrDefault();
+            ctx.Tasks.Remove(task);
+            ctx.SaveChanges();
         }
     }
 }

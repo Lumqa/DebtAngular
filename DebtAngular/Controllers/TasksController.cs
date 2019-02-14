@@ -30,5 +30,12 @@ namespace DebtAngular.Controllers
             var res = JsonConvert.SerializeObject(tasks);
             return Ok(tasks);
         }
+
+        [HttpDelete("{id}")]
+        public void Delete(string id)
+        {
+            _taskRepo.Delete(id);
+        }
+
     }
 }

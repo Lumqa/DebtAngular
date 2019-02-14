@@ -25,4 +25,14 @@ export class TasksComponent implements OnInit {
     });
   }
 
+  Delete(task: Task) {
+    this.taskService.delete(task.id).pipe(first()).subscribe(() => {
+      this.loadTasks()
+    });
+    // let index = this.tasks.findIndex(t => t.id === task.id); //find index in your array
+    // this.tasks.splice(index, 1);//remove element from array
+    // this.taskService.delete(task.id);
+    // console.log(task);
+  }
+
 }

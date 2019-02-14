@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DebtAngular.Data.Repositories.Abstract
 {
-    public interface ITaskRepo
+    public interface IDebtRepo
     {
-        IEnumerable<TaskModel> GetAll(string userId);
-        void Delete(string taskId);
+        DebtViewModel GetAll(string memberId);
     }
 }
