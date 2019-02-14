@@ -1,30 +1,47 @@
 <!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" routerLink="/">Home</a>
-        <a class="nav-item nav-link" routerLink="tasks">Tasks</a>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow border-bottom">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link text-black" routerLink="/">Home</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link text-black" routerLink="tasks">Tasks</a>
+      </li>
+    </ul>
+    <div *ngIf="currentUser; else elseBlock">
+      <ul class="nav navbar-nav">
+        <li>
+          <a class="text-black mx-2">{{currentUser.email}}</a>
+        </li>
+        <li>
+          <a class="text-black mx-2" (click)="logout()">Logout</a>
+        </li>
+      </ul>
     </div>
+    <ng-template #elseBlock>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a class="text-black mx-2" routerLink="/login">Login</a></li>
+        <li><a class="text-black mx-2" routerLink="/register">Register</a></li>
+      </ul>
+    </ng-template>
+   
+  </div>
 </nav>
 
 <!-- main app container -->
-<div class="jumbotron">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 offset-sm-3">
-                <alert></alert>
-                <router-outlet></router-outlet>
-            </div>
-        </div>
-    </div>
-</div>
+<main role="main" class="container">
+  <alert></alert>
+  <router-outlet></router-outlet>
+</main>
 
-<!-- credits -->
-<div class="text-center">
-    <p>
-        <a href="http://jasonwatmore.com/post/2018/10/29/angular-7-user-registration-and-login-example-tutorial" target="_top">Angular 7 - User Registration and Login Example & Tutorial</a>
-    </p>
-    <p>
-        <a href="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>
-    </p>
-</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/docs/4.2/assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
