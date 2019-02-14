@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DebtAngular.Models
 {
@@ -21,4 +20,11 @@ namespace DebtAngular.Models
         public string email { get; set; }
         public string Token { get; set; }
     }
+
+    public class TaskResultModel
+    {
+        public bool ResultStatus { get; set; }
+        public List<Task> Tasks { get; set; }
+    }
+
 }
