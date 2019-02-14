@@ -8,5 +8,7 @@ namespace DebtAngular.Data.Repositories.Abstract
     public interface ITaskRepo
     {
         IEnumerable<TaskModel> GetAll(string userId);
+
+        TaskModel GetValue(Guid taskId, string userId);
     }
 }

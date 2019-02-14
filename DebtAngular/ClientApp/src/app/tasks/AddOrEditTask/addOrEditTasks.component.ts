@@ -10,7 +10,7 @@ import { Task } from './../../_models';
 })
 export class  AddOrEditTasksComponent implements OnInit {
 
-  tasks: Task;
+  task: Task;
   constructor(private taskService: TaskService) { }
 
   ngOnInit() {
@@ -18,9 +18,9 @@ export class  AddOrEditTasksComponent implements OnInit {
   }
 
   loadTasks(): any {
-    this.taskService.getAddOrEditTask().pipe(first()).subscribe(tasks => {
-      this.tasks = tasks;
-      console.log(tasks);
+    this.taskService.getAddOrEditTask().pipe(first()).subscribe(task => {
+      this.task = task;
+      console.log(task);
     });
   }
 }
