@@ -1,4 +1,4 @@
-﻿import { User } from './../_models/user';
+import { User } from './../_models/user';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
                 data => {
                 this.alertService.success('Registration successful', true);
                 console.log(data);
-                localStorage.setItem('users', JSON.stringify(data['token']));
+                localStorage.setItem('currentUser', JSON.stringify(data['token']));
                     this.router.navigate(['/login']);
                 },
                 error => {
