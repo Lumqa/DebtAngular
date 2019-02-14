@@ -48,5 +48,11 @@ namespace DebtAngular.Controllers
 
             return Ok(task);
         }
+
+        [HttpDelete("{id}")]
+        public void Delete(string id)
+        {
+            _taskRepo.Delete(id);
+        }
     }
 }

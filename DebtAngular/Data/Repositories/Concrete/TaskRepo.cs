@@ -42,5 +42,12 @@ namespace DebtAngular.Data.Repositories.Concrete
 
             return taskModel;
         }
+
+        public void Delete(string taskId)
+        {
+            var task = Tasks.Where(t => t.Id == Guid.Parse(taskId)).FirstOrDefault();
+            ctx.Tasks.Remove(task);
+            ctx.SaveChanges();
+        }
     }
 }
