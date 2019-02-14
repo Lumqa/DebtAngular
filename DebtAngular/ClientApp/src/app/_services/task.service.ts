@@ -17,6 +17,10 @@ export class TaskService {
 
   delete(id: string) {
     return this.http.delete(`${environment.apiUrl}/tasks/${id}`);
+  getAddOrEditTask() {
+    return this.http.get<Task>(`${environment.apiUrl}/tasks/AddOrEditTask`);
+  }
+
 }
 
 }

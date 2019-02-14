@@ -6,8 +6,7 @@ import { Task } from './../_models';
 
 @Component({
   selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.css']
+  templateUrl: './tasks.component.html'
 })
 export class TasksComponent implements OnInit {
 
@@ -35,4 +34,9 @@ export class TasksComponent implements OnInit {
     // console.log(task);
   }
 
+  addOrEditTask(): any {
+    this.taskService.getAll().pipe(first()).subscribe(tasks => {
+      this.tasks = tasks;
+    });
+  }
 }
