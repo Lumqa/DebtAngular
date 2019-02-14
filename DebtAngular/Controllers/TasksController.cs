@@ -6,6 +6,7 @@ using DebtAngular.Data.Repositories.Abstract;
 using DebtAngular.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DebtAngular.Controllers
 {
@@ -24,7 +25,9 @@ namespace DebtAngular.Controllers
         public ActionResult<IEnumerable<Task>> Get()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
-            Object tasks = _taskRepo.GetAll(userId);
+            var tasks = _taskRepo.GetAll(userId).ToList();
+
+            var res = JsonConvert.SerializeObject(tasks);
             return Ok(tasks);
         }
     }
