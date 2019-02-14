@@ -15,6 +15,7 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { TasksComponent } from './tasks/tasks.component';
+import { DebtsComponent } from './debts/debts.component';
 import { AddOrEditTasksComponent } from './tasks/AddOrEditTask/addOrEditTasks.component';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { AddOrEditTasksComponent } from './tasks/AddOrEditTask/addOrEditTasks.co
         LoginComponent,
         RegisterComponent,
         TasksComponent,
+        DebtsComponent,
         AddOrEditTasksComponent
     ],
     providers: [
