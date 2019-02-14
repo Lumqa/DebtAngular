@@ -15,4 +15,8 @@ export class TaskService {
     return this.http.get<Task[]>(`${environment.apiUrl}/tasks`);
   }
 
+  getAddOrEditTask() {
+    return this.http.get<Task>(`${environment.apiUrl}/tasks/AddOrEditTask`);
+  }
+
 }

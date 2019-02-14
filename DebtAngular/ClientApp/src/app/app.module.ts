@@ -1,4 +1,4 @@
-﻿import { NgModule }      from '@angular/core';
+import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -15,6 +15,7 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { TasksComponent } from './tasks/tasks.component';
+import { AddOrEditTasksComponent } from './tasks/AddOrEditTask/addOrEditTasks.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { TasksComponent } from './tasks/tasks.component';
         HomeComponent,
         LoginComponent,
         RegisterComponent,
-        TasksComponent
+        TasksComponent,
+        AddOrEditTasksComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

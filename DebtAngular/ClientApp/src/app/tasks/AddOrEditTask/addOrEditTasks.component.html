@@ -1,0 +1,232 @@
+<form [formGroup]="AddOrEditForm" (ngSubmit)="onSubmit()">
+  <div class="form-inline">
+        <input for="TaskId" type="hidden" />
+        <input for="UserId" type="hidden" />
+        <label for="Name">Name</label>
+        <input formControlName="Name" class="form-control nameInput" />
+    
+        <label for="Sum">Sum</label>
+        <input formControlName="Sum" class="form-control nameInput" onkeyup="changeSum()" />
+
+
+
+        <label *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.required" class="text-danger">Email can't be empty.</label>
+        <label *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.email" class="text-danger" >Invalid email address.</label>
+    </div>
+  
+  <!--<div class="form-inline">
+    <input asp-for="TaskId" type="hidden" />
+    <input asp-for="UserId" type="hidden" />
+    <label asp-for="Name"></label>
+    <div class="form-inline m-2 d-flex flex-column">
+      <input asp-for="Name" class="form-control nameInput" />
+      <span asp-validation-for="Name"></span>
+    </div>
+    <label asp-for="Sum"></label>
+    <div class="form-inline m-2 d-flex flex-column">
+      <input asp-for="Sum" class="form-control" onkeyup="changeSum()" />
+      <span asp-validation-for="Sum"></span>
+    </div>
+  </div>-->
+
+  <div id="divMembers">
+    <h4>Members</h4>
+    <table class="memberstable">
+      <tr>
+        <th>Name</th>
+        <th>Deposit</th>
+        <th>Debt</th>
+      </tr>
+    </table>
+    <!--@foreach (var key in Model.Members.Keys)
+    {
+    <partial name="AddMember" model="@new EditTaskMemberViewModel(Model.Members, key)" />
+    }-->
+  </div>
+
+  <button type="button" onclick="AddMemberButton()" class="btn btn-primary">Add Member</button>
+  <input type="submit" class="btn btn-success" value="Save" />
+
+</form>
+
+<!--<div id="divNewMemberTemplate" class="hide" hidden="hidden">
+  <partial name="AddMember" model="@new EditTaskMemberViewModel(null, int.MaxValue.ToString())" />
+</div>
+
+@section Scripts{
+<partial name="_ValidationScriptsPartial" />
+}-->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript">
+
+  var slotsCount = @(Model.Members.Count);
+
+  function AddMemberButton() {
+    var template = $('#divNewMemberTemplate');
+    var timeSlotIndex = slotsCount;
+    var newTimeSlot = $(template.html().replace(new RegExp('@int.MaxValue', 'g'), timeSlotIndex));
+    $('#divMembers').append(newTimeSlot);
+    slotsCount++;
+    changeSum();
+  }
+
+  function removeMember(btn) {
+    console.log("remove");
+    $(btn).closest('[data-member-row]').remove();
+    changeSum();
+  }
+
+  function changeSum() {
+
+    //value in sum field
+    var sumInputElem = document.getElementById("Sum");
+    var sumInput = sumInputElem.value;
+
+    //change first field "deposit"
+    var depositInputs = document.getElementsByClassName("deposit");
+    depositInputs[0].value = sumInput;
+    changeDeposit();
+
+    //get all inputs with manual edit value
+    var debtsEditInputs = document.getElementsByClassName("debtediting");
+
+    if (debtsEditInputs.length != 0) {
+      var debtsEditSum = 0;
+      //caclulate sum without this fields
+      debtsEditSum = CalculateSum(debtsEditInputs, debtsEditInputs.length);
+
+      sumInput -= debtsEditSum;
+      if (sumInput < 0) {
+        sumInputElem.style.color = "red";
+        return;
+      } else {
+        sumInputElem.style.color = "black";
+      }
+    }
+
+    //get all inputs with "debts"
+    var debtsInputs = document.getElementsByClassName("debt");
+    var debtsLength = debtsInputs.length - 1;
+
+    //calculate basic value
+    var basicValueWithError = parseFloat((sumInput / debtsLength).toFixed(2));
+
+    //calculate sum value with error
+    var sumWithError = basicValueWithError * debtsLength;
+
+    //get error
+    var error = parseFloat((sumInput - sumWithError).toFixed(2));
+
+    //global iterator for set correct debt value
+    var iterator = 0;
+    if (error != 0) {
+      //check sing in error
+      var sign = (error >= 0) ? true : false;
+      while (error != 0) {
+        //check sign and inc or dec value for correct value
+        switch (sign) {
+          case false:
+            error += 0.01;
+            debtsInputs[iterator].value = parseFloat(basicValueWithError - 0.01).toFixed(2);
+            break;
+
+          case true:
+            error -= 0.01;
+            debtsInputs[iterator].value = parseFloat(basicValueWithError + 0.01).toFixed(2);
+            break;
+        }
+        iterator++;
+      }
+    }
+
+    //set value for other inputs, if needed
+    while (iterator <= debtsLength) {
+      debtsInputs[iterator].value = basicValueWithError;
+      iterator++;
+    }
+  }
+
+  function changeDebt(editedInput) {
+    editedInput.className += "editing";
+  }
+
+
+  function changeDeposit() {
+    var sumInput = document.getElementById("Sum");
+    var depositInputs = document.getElementsByClassName("deposit");
+
+    var sumDeposits = CalculateSum(depositInputs, depositInputs.length - 1);
+    if (sumDeposits !== sumInput.value) {
+      sumInput.style.color = "red";
+    } else {
+      sumInput.style.color = "black";
+    }
+  }
+
+  //replace all sum calc
+  function CalculateSum(inputs, length) {
+    var sum = 0;
+    for (var iterator = 0; iterator < length; iterator++) {
+      sum += parseFloat(inputs[iterator].value);
+    }
+    return sum;
+  }
+  
+  //  function CheckNames(array) {
+  //    for (var i = 0; i < array.length - 1; i++) {
+  //      if (array[i].value === '') {
+  //        swal({
+  //          icon: "error",
+  //          text: "Field \"Name\" can't be empty",
+  //          dangerMode: true,
+  //        });
+  //        return false;
+  //      };
+  //    };
+  //    return true;
+  //  }
+
+
+  //function saveDebts() {
+  //  var sumInput = document.getElementById("Sum");
+  //  var depositInputs = document.getElementsByClassName("deposit")
+  //  var debtInputs = document.getElementsByClassName("saveDebt");
+  //  var nameInputs = document.getElementsByClassName("nameInput");
+
+  //  var depositsSum = CalculateSum(depositInputs, depositInputs.length - 1);
+  //  var debtsSum = CalculateSum(debtInputs, debtInputs.length - 1);
+
+  //  if (!CheckNames(nameInputs)) {
+  //    return;
+  //  }
+
+  //  if (sumInput.value != depositsSum) {
+  //    swal({
+  //      icon: "error",
+  //      text: "Sum of deposits not equal Task sum",
+  //      dangerMode: true
+  //    });
+  //    return;
+  //  }
+  //  if (sumInput.value != debtsSum) {
+  //    swal({
+  //      icon: "error",
+  //      text: "Sum of debts not equal Task sum",
+  //      dangerMode: true,
+  //    });
+  //    return;
+  //  }
+
+  //  $.ajax({
+  //    url: '@Url.Action("AddOrEditTask","Tasks")',
+  //    data: $('#fromAddOrEditTask').serialize(),
+  //    type: 'POST',
+  //    async: false,
+  //    success: function (response) {
+  //      window.location = response;
+  //    }
+  //  });
+  //}
+
+
+</script>
