@@ -32,7 +32,7 @@ import { AddOrEditTasksComponent } from './tasks/AddOrEditTask/addOrEditTasks.co
         LoginComponent,
         RegisterComponent,
         TasksComponent,
-        DebtsComponent
+        DebtsComponent,
         AddOrEditTasksComponent
     ],
     providers: [
