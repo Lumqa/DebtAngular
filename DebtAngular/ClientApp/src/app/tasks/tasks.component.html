@@ -13,22 +13,18 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>
 
-        <!-- @Html.ActionLink(item.Name, "AddOrEditTask", "Tasks", new { id = i }) -->
+    <tr *ngFor="let item of tasks">
+      <td>
+        <a routerLink="/addOrEditTask" [queryParams]="{'id':item['id']}">{{item['name']}}</a>
       </td>
       <td>
-        <!-- @Html.DisplayFor(modelItem => item.Sum) -->
+        {{item['sum']}}
       </td>
       <td>
-        <!-- @foreach (var mem in item.Members)
-                    {
-                        @Html.ActionLink(mem.Name, "Index", "Debt", new { taskID = i, memberID = j })
-                        @:&nbsp;
-                        j++;
-                    }
-                    @{ j = 1; } -->
+        <div *ngFor="let debtor of item['members']">
+          <a routerLink="debt" [queryParams]="{'taskId':item['id'], 'memberId':debtor['id']}">{{debtor['name']}}</a>
+        </div>
       </td>
       <td class="removetask">
         <button id="@item.Id" type="button" onclick="Delete(this)" class="btn btn-danger">×</button>

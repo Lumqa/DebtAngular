@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+.removetask {
+    width: 1px;
+    padding: 0 !important;
+}
+
+.removetask > button {
+    margin: 3px;
+    width: 45px;
+    height: 45px;
+}

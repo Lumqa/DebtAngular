@@ -21,6 +21,7 @@ export class TasksComponent implements OnInit {
   loadTasks(): any {
     this.taskService.getAll().pipe(first()).subscribe(tasks => {
       this.tasks = tasks;
+      console.log(tasks);
     });
   }
 
