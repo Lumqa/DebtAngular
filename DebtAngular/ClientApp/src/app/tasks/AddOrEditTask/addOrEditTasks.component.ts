@@ -16,8 +16,7 @@ export class AddOrEditTasksComponent implements OnInit {
   task: Task;
   editTaskForm: FormGroup;
 
-  get taskMembers(){
-    console.log((this.editTaskForm.get('members') as FormArray))
+  get taskMembers(): FormArray{
     return (this.editTaskForm.get('members') as FormArray);
   }
 
