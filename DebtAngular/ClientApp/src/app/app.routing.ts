@@ -14,7 +14,7 @@ const appRoutes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'tasks', component: TasksComponent },
     { path: 'debts', component: DebtsComponent },
-    { path: 'addOrEditTasks', component: AddOrEditTasksComponent },
+    { path: 'addOrEditTask', component: AddOrEditTasksComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

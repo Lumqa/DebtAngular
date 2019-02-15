@@ -32,7 +32,7 @@ namespace DebtAngular.Controllers
             return Ok(tasks);
         }
 
-        [HttpGet("AddOrEditTask/{id}")]
+        [HttpGet("AddOrEditTask/{id?}")]
         public IActionResult AddOrEditTask(Guid? id)
         {
             TaskModel task = new TaskModel
@@ -43,7 +43,7 @@ namespace DebtAngular.Controllers
 
             if (id != null)
             {
-                task = _taskRepo.GetValue(id ?? Guid.Empty, UserId);
+                task = _taskRepo.GetValue(id ?? Guid.Empty);
             }
 
             return Ok(task);

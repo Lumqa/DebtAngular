@@ -26,10 +26,9 @@ namespace DebtAngular.Data.Repositories.Concrete
             return taskModels;
         }
 
-        public TaskModel GetValue(Guid taskId, string userId)
+        public TaskModel GetValue(Guid taskId)
         {
-            var tasks = Tasks.Where(s => s.UserId == userId);
-            var task = tasks.Where(t => t.Id == taskId).First();
+            var task = Tasks.Where(t => t.Id == taskId).First();
             TaskModel taskModel = new TaskModel
             {
                 Name = task.Name,
