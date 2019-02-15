@@ -6,5 +6,12 @@ export class Member {
     deposit:number;
     debt:number;
     taskId:string;
+    constructor(taskId:string){
+        this.id='';
+        this.name='';
+        this.deposit=0;
+        this.debt=0;
+        this.taskId='';
+    }
 }
 

@@ -1,4 +1,5 @@
 
+
 <form [formGroup]="editTaskForm" (ngSubmit)="onSubmit()">
   <div class="form-inline">
         <input formControlName="taskId" type="hidden" />
@@ -9,12 +10,16 @@
         <label for="sum">Sum</label>
         <input formControlName="sum" class="form-control nameInput" onkeyup="changeSum()" />
     </div>
-    <div *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
-      <input type="hidden" formControlName="memberId" class="form-control" />
-      <input formControlName="memberName" class="form-control " />
-      <input formControlName="memberDeposit" class="form-control" />
-      <input formControlName="memberDebt" class="form-control" />
+    <div formArrayName="members">
+        <div *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
+            <input type="hidden" formControlName="id" class="form-control" />
+            <input formControlName="name" class="form-control " />
+            <input formControlName="deposit" class="form-control" />
+            <input formControlName="debt" class="form-control" />
+          </div>
+
     </div>
+    
 
   <!--<div class="form-inline">
     <input asp-for="TaskId" type="hidden" />

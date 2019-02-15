@@ -1,3 +1,4 @@
+import { Member } from './../../_models/member';
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { TaskService } from './../../_services';
@@ -12,16 +13,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AddOrEditTasksComponent implements OnInit {
   taskId: string;
-  userId:string;
+  userId: string;
   task: Task;
   editTaskForm: FormGroup;
 
-  get taskMembers(): FormArray{
+  get taskMembers(): FormArray {
     return (this.editTaskForm.get('members') as FormArray);
   }
 
-  addTaskMember(){
-    this.taskMembers.push(this.formBuilder.group({}));
+  addTaskMember() {
+    let fg = this.formBuilder.group(new Member(this.taskId));
+    this.taskMembers.push(fg);
   }
 
   constructor(private taskService: TaskService, private activateRoute: ActivatedRoute, private formBuilder: FormBuilder) {
@@ -35,18 +37,12 @@ export class AddOrEditTasksComponent implements OnInit {
       userId: [''],
       name: [''],
       sum: [''],
-      members: this.formBuilder.array([
-        this.formBuilder.group({
-          memberId: [''],
-          memberName: [''],
-          memberDeposit: [''],
-          memberDebt: ['']
-        })
-      ]),
+      members: this.formBuilder.array([])
     });
+    this.addTaskMember();
   }
 
-  
+
 
   loadTasks(): any {
     this.taskService.getAddOrEditTask(this.taskId).pipe(first()).subscribe(task => {
