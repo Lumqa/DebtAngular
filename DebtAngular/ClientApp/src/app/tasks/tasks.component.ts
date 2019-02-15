@@ -39,4 +39,10 @@ export class TasksComponent implements OnInit {
       this.tasks = tasks;
     });
   }
+
+  save(task: Task) {
+    this.taskService.save(task).pipe(first()).subscribe(() => {
+      this.loadTasks()
+    });
+  }
 }

@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DebtAngular.Data.Repositories.Concrete
 {
-    public class TaskRepo:ITaskRepo
+    public class TaskRepo : ITaskRepo
     {
         private readonly ApplicationDbContext ctx;
         private IEnumerable<Task> Tasks => ctx.Tasks.Include(m => m.Members).Include(d => d.Debts).ToList();
@@ -46,6 +46,12 @@ namespace DebtAngular.Data.Repositories.Concrete
         {
             var task = Tasks.Where(t => t.Id == Guid.Parse(taskId)).FirstOrDefault();
             ctx.Tasks.Remove(task);
+            ctx.SaveChanges();
+        }
+
+        public void Save(Task task)
+        {
+            ctx.Tasks.Add(task);
             ctx.SaveChanges();
         }
     }

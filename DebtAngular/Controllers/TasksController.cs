@@ -54,5 +54,12 @@ namespace DebtAngular.Controllers
         {
             _taskRepo.Delete(id);
         }
+
+
+        [HttpPut]
+        public void save(Task task)
+        {
+            _taskRepo.Save(task);
+        }
     }
 }

@@ -1,44 +1,158 @@
-
-
-<form [formGroup]="editTaskForm" (ngSubmit)="onSubmit()">
+<!--<form [formGroup]="editTaskForm" (ngSubmit)="onSubmit()">
   <div class="form-inline">
-        <input formControlName="taskId" type="hidden" />
-        <input formControlName="userId" type="hidden" />
-        <label for="name">Name</label>
-        <input formControlName="name" class="form-control nameInput" />
-    
-        <label for="sum">Sum</label>
-        <input formControlName="sum" class="form-control nameInput" onkeyup="changeSum()" />
-    </div>
-    <div formArrayName="members">
-        <div *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
-            <input type="hidden" formControlName="id" class="form-control" />
-            <input formControlName="name" class="form-control " />
-            <input formControlName="deposit" class="form-control" />
-            <input formControlName="debt" class="form-control" />
-          </div>
+    <input formControlName="taskId" type="hidden" />
+    <input formControlName="userId" type="hidden" />
+    <label for="name">Name</label>
+    <input formControlName="name" class="form-control nameInput" />
 
+    <label for="sum">Sum</label>
+    <input formControlName="sum" class="form-control nameInput" onkeyup="changeSum()" />
+  </div>
+  <div formArrayName="members">
+    <div *ngFor="let item of taskMembers.controls; let idx = index" [formGroupName]="idx">
+      <input type="hidden" formControlName="id" class="form-control" value="{{idx}}" />
+      <input formControlName="name" class="form-control" />
+      <input formControlName="deposit" class="form-control" />
+      <input formControlName="debt" class="form-control" />
     </div>
-    
 
-  <!--<div class="form-inline">
-    <input asp-for="TaskId" type="hidden" />
-    <input asp-for="UserId" type="hidden" />
-    <label asp-for="Name"></label>
-    <div class="form-inline m-2 d-flex flex-column">
-      <input asp-for="Name" class="form-control nameInput" />
-      <span asp-validation-for="Name"></span>
-    </div>
-    <label asp-for="Sum"></label>
-    <div class="form-inline m-2 d-flex flex-column">
-      <input asp-for="Sum" class="form-control" onkeyup="changeSum()" />
-      <span asp-validation-for="Sum"></span>
-    </div>
   </div>-->
+<div class="form-inline">
+  <input type="hidden" value="{{ task?.id }}" />
+  <input type="hidden" value="{{ task?.userid }}" />
+  <label for="name">Name</label>
+  <input class="form-control nameInput" value="{{ task?.name }}" />
+  <label for="sum">Sum</label>
+  <input class="form-control nameInput" onkeyup="changeSum()" value="{{ task?.sum }}" />
+</div>
+<div class="task">
+  <div class="form-inline" *ngFor="let item of task?.members">
+    <a>
+      <input class="form-control mx-2" value="{{ item?.name }}">
+      <input class="form-control mx-2" value="{{ item?.deposit }}">
+      <input class="form-control mx-2" value="{{ item?.debt }}">
+    </a>
+    <button class="delete" title="delete hero">x</button>
+  </div>
+</div>
 
- 
+<!--<div class="form-inline">
+  <input asp-for="TaskId" type="hidden" />
+  <input asp-for="UserId" type="hidden" />
+  <label asp-for="Name"></label>
+  <div class="form-inline m-2 d-flex flex-column">
+    <input asp-for="Name" class="form-control nameInput" />
+    <span asp-validation-for="Name"></span>
+  </div>
+  <label asp-for="Sum"></label>
+  <div class="form-inline m-2 d-flex flex-column">
+    <input asp-for="Sum" class="form-control" onkeyup="changeSum()" />
+    <span asp-validation-for="Sum"></span>
+  </div>
+</div>-->
 
-  <button type="button" (click)="addTaskMember()" class="btn btn-primary">Add Member</button>
-  <input type="submit" class="btn btn-success" value="Save" />
 
-</form>
+
+<button type="button" (click)="addTaskMember()" class="btn btn-primary">Add Member</button>
+<button type="button" (click)="save()" class="btn btn-primary">Save</button>
+
+<!--</form>-->
+<style>
+  /* HeroesComponent's private CSS styles */
+  .heroes {
+    margin: 0 0 2em 0;
+    list-style-type: none;
+    padding: 0;
+    width: 15em;
+  }
+
+    .heroes li {
+      position: relative;
+      cursor: pointer;
+      background-color: #EEE;
+      margin: .5em;
+      padding: .3em 0;
+      height: 1.6em;
+      border-radius: 4px;
+      width: 19em;
+    }
+
+      .heroes li:hover {
+        color: #607D8B;
+        background-color: #DDD;
+        left: .1em;
+      }
+
+    .heroes a {
+      color: #888;
+      text-decoration: none;
+      position: relative;
+      display: block;
+      width: 250px;
+    }
+
+      .heroes a:hover {
+        color: #607D8B;
+      }
+
+    .heroes .badge {
+      display: inline-block;
+      font-size: small;
+      color: white;
+      padding: 0.8em 0.7em 0 0.7em;
+      background-color: #607D8B;
+      line-height: 1em;
+      position: relative;
+      left: -1px;
+      top: -4px;
+      height: 1.8em;
+      min-width: 16px;
+      text-align: right;
+      margin-right: .8em;
+      border-radius: 4px 0 0 4px;
+    }
+
+  .button {
+    background-color: #eee;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    cursor: hand;
+    font-family: Arial;
+  }
+
+  button:hover {
+    background-color: #cfd8dc;
+  }
+
+  button.delete {
+    position: relative;
+    left: 24em;
+    top: -32px;
+    background-color: gray !important;
+    color: white;
+    display: inherit;
+    padding: 5px 8px;
+    width: 2em;
+  }
+
+  input {
+    font-size: 100%;
+    margin-bottom: 2px;
+    width: 11em;
+  }
+
+  .heroes input {
+    position: relative;
+    top: -3px;
+    width: 12em;
+  }
+
+
+  /*
+  Copyright Google LLC. All Rights Reserved.
+  Use of this source code is governed by an MIT-style license that
+  can be found in the LICENSE file at http://angular.io/license
+  */
+</style>

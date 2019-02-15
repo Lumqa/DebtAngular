@@ -18,6 +18,11 @@ export class TaskService {
   delete(id: string) {
     return this.http.delete(`${environment.apiUrl}/tasks/${id}`);
   }
+
+  save(task: Task) {
+    console.log("save");
+    return this.http.put(`${environment.apiUrl}/tasks/`, task);
+  }
   getAddOrEditTask(taskId:string) {
     return this.http.get<Task>(`${environment.apiUrl}/tasks/addoredittask/`+((taskId===undefined)? ' ':taskId));
   }
