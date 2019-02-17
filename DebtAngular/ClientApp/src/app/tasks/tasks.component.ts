@@ -20,13 +20,12 @@ export class TasksComponent implements OnInit {
   loadTasks(): any {
     this.taskService.getAll().pipe(first()).subscribe(tasks => {
       this.tasks = tasks;
-      console.log(tasks);
     });
   }
 
   Delete(task: Task) {
     this.taskService.delete(task.id).pipe(first()).subscribe(() => {
-      this.loadTasks()
+      this.loadTasks();
     });
     // let index = this.tasks.findIndex(t => t.id === task.id); //find index in your array
     // this.tasks.splice(index, 1);//remove element from array
@@ -40,9 +39,4 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  save(task: Task) {
-    this.taskService.save(task).pipe(first()).subscribe(() => {
-      this.loadTasks()
-    });
-  }
 }

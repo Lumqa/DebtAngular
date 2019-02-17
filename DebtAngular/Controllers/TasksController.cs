@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using DebtAngular.Data.Repositories.Abstract;
 using DebtAngular.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -15,7 +14,7 @@ namespace DebtAngular.Controllers
     public class TasksController : Controller
     {
         private readonly ITaskRepo _taskRepo;
-        public string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
+        private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         public TasksController(ITaskRepo taskRepository)
         {
@@ -25,8 +24,7 @@ namespace DebtAngular.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Task>> Index()
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value.ToString();
-            var tasks = _taskRepo.GetAll(userId).ToList();
+            var tasks = _taskRepo.GetAll(UserId).ToList();
 
             var res = JsonConvert.SerializeObject(tasks);
             return Ok(tasks);
@@ -43,7 +41,7 @@ namespace DebtAngular.Controllers
 
             if (id != null)
             {
-                task = _taskRepo.GetValue(id ?? Guid.Empty);
+                task = _taskRepo.GetValue((Guid) id);
             }
 
             return Ok(task);
@@ -54,12 +52,12 @@ namespace DebtAngular.Controllers
         {
             _taskRepo.Delete(id);
         }
-
-
-        [HttpPut]
-        public void save(Task task)
+        
+      
+        [HttpPost]
+        public void Save([FromBody] Task task)
         {
-            _taskRepo.Save(task);
+            _taskRepo.Save(task, UserId);
         }
     }
 }

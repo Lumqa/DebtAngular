@@ -8,4 +8,8 @@ export class Task {
     userId: string;
     members: Member[] = [];
     debts: Debt[] = [];
+    constructor() {
+    this.id = '00000000-0000-0000-0000-000000000000';
+  }
+
 }

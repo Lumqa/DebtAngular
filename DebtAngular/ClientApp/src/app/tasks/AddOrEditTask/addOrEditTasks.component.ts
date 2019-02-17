@@ -16,12 +16,13 @@ export class AddOrEditTasksComponent implements OnInit {
   taskId: string;
   task: Task;
 
-  constructor(private taskService: TaskService, private activateRoute: ActivatedRoute) {
+  constructor(private taskService: TaskService, activateRoute: ActivatedRoute) {
     this.taskId = activateRoute.snapshot.queryParams['taskId'];
   }
 
   ngOnInit() {
     this.loadTasks();
+   
   }
 
   addTaskMember(): void {
@@ -29,10 +30,17 @@ export class AddOrEditTasksComponent implements OnInit {
   }
 
   loadTasks(): any {
-    this.taskService.getAddOrEditTask(this.taskId).subscribe(task => this.task = task);
+    this.taskService.getAddOrEditTask(this.taskId).subscribe(task => task.id ? this.task = task : this.task = new Task());
   }
 
   save() {
-    this.taskService.save(this.task);
+    this.taskService.save(this.task).subscribe();
+  }
+
+  delete(member: Member) {
+    this.task.members.forEach((item, index) => {
+      if (item.id === member.id) this.task.members.splice(index, 1);
+    });
+    console.log(this.task);
   }
 }

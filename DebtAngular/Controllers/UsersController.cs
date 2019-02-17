@@ -77,14 +77,9 @@ namespace DebtAngular.Controllers
                 resultModel.Token = (string)(await GenerateJwtToken(applicationUserModel.Email, appUser));
                 return Ok(resultModel);
             }
-            else
-            {
-                resultModel.ResultStatus = result.IsNotAllowed;
-                return BadRequest(resultModel);
-            }
 
-
-            throw new ApplicationException("INVALID_LOGIN_ATTEMPT");
+            resultModel.ResultStatus = result.IsNotAllowed;
+            return BadRequest(resultModel);
         }
 
 
