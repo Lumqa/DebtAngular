@@ -28,6 +28,7 @@ export class AddOrEditTasksComponent implements OnInit {
   ngOnInit() {
     this.createForm();
     this.loadTasks();
+    if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
   }
 
   createForm() {

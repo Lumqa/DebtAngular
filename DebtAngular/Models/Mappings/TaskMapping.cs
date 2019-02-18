@@ -8,7 +8,7 @@ namespace DebtAngular.Models.Mappings
         {
             return new TaskModel
             {
-                Id = task.Id.ToString(),
+                Id = task.Id,
                 Name = task.Name,
                 Sum = task.Sum,
                 UserId = task.UserId,

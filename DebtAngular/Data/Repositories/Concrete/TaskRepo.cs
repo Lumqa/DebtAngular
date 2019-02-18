@@ -32,7 +32,7 @@ namespace DebtAngular.Data.Repositories.Concrete
             {
                 Name = task.Name,
                 Sum = task.Sum,
-                Id = task.Id.ToString(),
+                Id = task.Id,
                 UserId = task.UserId,
                 Members = task.Members.Select(m => m.Map()).ToList()
             };
@@ -47,6 +47,69 @@ namespace DebtAngular.Data.Repositories.Concrete
             _ctx.Tasks.Remove(task);
             _ctx.SaveChanges();
         }
+
+        public void Save(TaskModel taskModel, string userid)
+        {
+            Task task = new Task
+            {
+                Id = taskModel.Id,
+                Name = taskModel.Name,
+                Sum = taskModel.Sum,
+                UserId = taskModel.UserId,
+                Members = taskModel.Members.Select(e => e.Map()).ToList(),
+                Debts = taskModel.Debts.Select(e => e.Map()).ToList()
+            };
+
+            var listMembersIdForDel = _ctx.Members.Where(t => t.TaskId == task.Id).Except(taskModel.Members.Select(e => e.Map()));
+            var listDebtsIdForDel = _ctx.Debts.Where(t => t.TaskId == task.Id).Except(taskModel.Debts.Select(d => d.Map()));
+
+            var takeDebtsId = _ctx.Debts.Where(d => d.TaskId == task.Id);
+
+            int i = 0;
+            foreach (var item in takeDebtsId)
+            {
+                task.Debts.ElementAt(i).Id = item.Id;
+                i++;
+            }
+
+            foreach (var item in listMembersIdForDel)
+            {
+                _ctx.Members.Remove(item);
+            }
+
+            foreach (var item in listDebtsIdForDel)
+            {
+                _ctx.Debts.Remove(item);
+            }
+
+            if (task.Id == Guid.Empty)
+            {
+                task.Id = Guid.NewGuid();
+                task.UserId = userid;
+                foreach (var member in task.Members)
+                {
+                    member.TaskId = task.Id;
+                }
+                _ctx.Tasks.Add(task);
+            }
+            else
+            {
+                foreach (var member in task.Members)
+                {
+                    _ctx.Entry(member).State = EntityState.Modified;
+                }
+                foreach (var debt in task.Debts)
+                {
+                    debt.Id = Guid.Parse(taskModel.Debts.First().Id);
+                    _ctx.Entry(debt).State = EntityState.Modified;
+                }
+                _ctx.Entry(task).State = EntityState.Modified;
+                _ctx.Tasks.Update(task);
+            }
+
+            _ctx.SaveChanges();
+        }
+
         public void Save(Task task, string userid)
         {
             if (task.Id == Guid.Empty)
@@ -55,7 +118,7 @@ namespace DebtAngular.Data.Repositories.Concrete
                 task.UserId = userid;
                 foreach (var member in task.Members)
                 {
-                    member.Id = Guid.NewGuid();
+                    member.TaskId = task.Id;
                 }
                 _ctx.Tasks.Add(task);
             }
