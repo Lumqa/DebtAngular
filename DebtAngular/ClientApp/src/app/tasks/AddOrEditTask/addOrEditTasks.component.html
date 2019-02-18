@@ -62,7 +62,7 @@
     <div id="divMembers">
       <h4>Members</h4>
       <button type="button" (click)="addTaskMember()" class="btn btn-primary m-1">Add Member</button>
-      <button type="submit" class="btn btn-success m-1"  >Save</button>
+      <button type="submit" class="btn btn-success m-1" [disabled]="!editTaskForm.valid" >Save</button>
       <table class="memberstable">
         <tr>
           <th>Name</th>
@@ -74,8 +74,8 @@
         <div class="form-inline" *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
           <input type="hidden" formControlName="id" />
           <input formControlName="name" class="form-control m-2 " />
-          <input formControlName="deposit" class="form-control m-2" />
-          <input formControlName="debt" class="form-control m-2" />
+          <input type="text" formControlName="deposit" class="form-control m-2" />
+          <input type="text" formControlName="debt" class="form-control m-2" />
           <button class="btn btn-danger" (click)="deleteMember(idx)">x</button>
         </div>
       </div>
