@@ -33,13 +33,21 @@ export class AddOrEditTasksComponent implements OnInit {
   }
 
   addTaskMember(member?: Member): void {
-    //this.task.members.push(new Member(this.taskId));
-    let fg;
     if (member == null) {
-      fg = this.formBuilder.group(new Member(this.taskId), { validator: this.MemberNameValidator });
+      this.fillingMemberData(new Member(this.taskId));
     } else {
-      fg = this.formBuilder.group(member, { validator: this.MemberNameValidator });
+      this.fillingMemberData(member);
     }
+  }
+
+  fillingMemberData(member:Member){
+    let fg = this.formBuilder.group({
+      id:[member.id],
+      name:[member.name, Validators.required],
+      deposit:[member.deposit, [Validators.required,Validators.min(0)]],
+      debt:[member.debt,[Validators.required,Validators.min(0)]],
+      taskId:[member.taskId]
+    });
     this.taskMembers.push(fg);
   }
 

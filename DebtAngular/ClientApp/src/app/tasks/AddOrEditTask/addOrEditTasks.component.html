@@ -74,8 +74,19 @@
         <div class="form-inline" *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
           <input type="hidden" formControlName="id" />
           <input formControlName="name" class="form-control m-2 " />
+          <div *ngIf="item.get('name').touched && item.get('name').errors">
+              <label *ngIf="item.get('name').errors?.required" class="text-danger">Name can't be empty.</label>
+            </div>
           <input type="text" formControlName="deposit" class="form-control m-2" />
+          <div *ngIf="item.get('deposit').touched && item.get('deposit').errors">
+              <label *ngIf="item.get('deposit').errors?.required" class="text-danger">Deposit can't be empty.</label>
+              <label *ngIf="item.get('deposit').errors.errors?.min" class="text-danger">Deposit can't be negative.</label>
+            </div>
           <input type="text" formControlName="debt" class="form-control m-2" />
+          <div *ngIf="item.get('debt').touched && item.get('debt').errors">
+              <label *ngIf="item.get('debt').errors?.required" class="text-danger">Debt can't be empty.</label>
+              <label *ngIf="item.get('debt').errors.errors?.min" class="text-danger">Debt can't be negative.</label>
+            </div>
           <button class="btn btn-danger" (click)="deleteMember(idx)">x</button>
         </div>
       </div>
