@@ -34,7 +34,8 @@ namespace DebtAngular.Data.Repositories.Concrete
                 Sum = task.Sum,
                 Id = task.Id,
                 UserId = task.UserId,
-                Members = task.Members.Select(m => m.Map()).ToList()
+                Members = task.Members.Select(m => m.Map()).ToList(),
+                Debts = task.Debts.Select(d=>d.Map()).ToList()
             };
 
 
