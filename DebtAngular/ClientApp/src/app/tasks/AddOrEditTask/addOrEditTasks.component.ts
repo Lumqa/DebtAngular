@@ -5,7 +5,7 @@ import { TaskService } from './../../_services';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import { Task } from './../../_models';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscriber } from 'rxjs';
 
 @Component({
@@ -15,32 +15,67 @@ import { Subscriber } from 'rxjs';
 export class AddOrEditTasksComponent implements OnInit {
   taskId: string;
   task: Task;
+  editTaskForm: FormGroup;
 
-  constructor(private taskService: TaskService, activateRoute: ActivatedRoute) {
+  constructor(private taskService: TaskService, activateRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {
     this.taskId = activateRoute.snapshot.queryParams['taskId'];
   }
 
-  ngOnInit() {
-    this.loadTasks();
-   
+  get taskMembers(): FormArray {
+    return (this.editTaskForm.get('members') as FormArray);
   }
 
-  addTaskMember(): void {
-    this.task.members.push(new Member(this.taskId));
+  ngOnInit() {
+    this.createForm();
+    this.loadTasks();
+  }
+
+  createForm() {
+    this.editTaskForm = this.formBuilder.group({
+      taskId: [''],
+      userId: [''],
+      name: [''],
+      sum: [''],
+      members: this.formBuilder.array([])
+    });
+    //this.addTaskMember();
+  }
+
+  addTaskMember(member?: Member): void {
+    //this.task.members.push(new Member(this.taskId));
+    let fg;
+    if (member == null) {
+      fg = this.formBuilder.group(new Member(this.taskId));
+    } else {
+      fg = this.formBuilder.group(member);
+    }
+    this.taskMembers.push(fg);
+  }
+
+  deleteMember(index:number) {
+    this.taskMembers.removeAt(index);
   }
 
   loadTasks(): any {
-    this.taskService.getAddOrEditTask(this.taskId).subscribe(task => task.id ? this.task = task : this.task = new Task());
-  }
-
-  save() {
-    this.taskService.save(this.task).subscribe();
-  }
-
-  delete(member: Member) {
-    this.task.members.forEach((item, index) => {
-      if (item.id === member.id) this.task.members.splice(index, 1);
+    this.taskService.getAddOrEditTask(this.taskId).subscribe(task => {
+      task.id ? this.task = task : this.task = new Task();
+      this.editTaskForm.controls['taskId'].setValue(this.task.id);
+      this.editTaskForm.controls['name'].setValue(this.task.name);
+      this.editTaskForm.controls['sum'].setValue(this.task.sum);
+      this.editTaskForm.controls['userId'].setValue(this.task.userId);
+      this.task.members.forEach((item) => {this.addTaskMember(item);});
     });
-    console.log(this.task);
+  }
+
+  saveTask() {
+    let formValue = this.editTaskForm;
+    this.task.name = formValue.get('name').value;
+    this.task.sum = formValue.get('sum').value;
+    this.task.members = [];
+    formValue.get('members').value.forEach(element => {
+      this.task.members.push(<Member>element);
+    });
+    this.taskService.save(this.task).subscribe();
+    //this.router.navigate(['tasks']);
   }
 }
