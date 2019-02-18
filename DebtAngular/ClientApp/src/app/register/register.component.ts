@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
             passwords: this.formBuilder.group({
                 password: ['', [Validators.required, Validators.minLength(4)]],
                 confirmPassword: ['', Validators.required]
-              }, { validator: this.comparePasswords })
+              },{ validator: this.comparePasswords })
         });
     }
 

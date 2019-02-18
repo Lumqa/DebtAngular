@@ -1,7 +1,7 @@
 import { DoBootstrap } from "@angular/core";
 
 export class Member {
-    id:string
+    id:string;
     name:string;
     deposit:number;
     debt:number;
