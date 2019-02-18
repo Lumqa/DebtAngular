@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { TaskService } from './../_services';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Task } from './../_models';
 
@@ -11,8 +12,10 @@ import { Task } from './../_models';
 export class TasksComponent implements OnInit {
 
   tasks: Task[] = [];
-  constructor(private taskService: TaskService) { }
-
+  constructor(private taskService: TaskService, route: ActivatedRoute) {
+    route.params.subscribe(val => {
+      this.loadTasks();
+    });}
   ngOnInit() {
     this.loadTasks();
   }
