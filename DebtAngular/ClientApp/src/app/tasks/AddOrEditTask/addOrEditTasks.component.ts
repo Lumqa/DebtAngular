@@ -60,8 +60,8 @@ export class AddOrEditTasksComponent implements OnInit {
     let sumDeposit = 0;
     let sumDebt = 0;
     fg.get('members').value.forEach(element => {
-      sumDeposit = parseFloat(sumDeposit + (<Member>element).deposit);
-      sumDebt += parseFloat((<Member>element).debt);
+      //sumDeposit = parseFloat(sumDeposit + (<Member>element).deposit);
+      //sumDebt += parseFloat((<Member>element).debt);
     });
 
 

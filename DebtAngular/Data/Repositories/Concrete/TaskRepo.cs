@@ -64,15 +64,6 @@ namespace DebtAngular.Data.Repositories.Concrete
             var listMembersIdForDel = _ctx.Members.Where(t => t.TaskId == task.Id).Except(taskModel.Members.Select(e => e.Map()));
             var listDebtsIdForDel = _ctx.Debts.Where(t => t.TaskId == task.Id).Except(taskModel.Debts.Select(d => d.Map()));
 
-            var takeDebtsId = _ctx.Debts.Where(d => d.TaskId == task.Id);
-
-            int i = 0;
-            foreach (var item in takeDebtsId)
-            {
-                task.Debts.ElementAt(i).Id = item.Id;
-                i++;
-            }
-
             foreach (var item in listMembersIdForDel)
             {
                 _ctx.Members.Remove(item);
@@ -95,16 +86,6 @@ namespace DebtAngular.Data.Repositories.Concrete
             }
             else
             {
-                foreach (var member in task.Members)
-                {
-                    _ctx.Entry(member).State = EntityState.Modified;
-                }
-                foreach (var debt in task.Debts)
-                {
-                    debt.Id = Guid.Parse(taskModel.Debts.First().Id);
-                    _ctx.Entry(debt).State = EntityState.Modified;
-                }
-                _ctx.Entry(task).State = EntityState.Modified;
                 _ctx.Tasks.Update(task);
             }
 
