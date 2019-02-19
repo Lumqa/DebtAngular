@@ -1,5 +1,5 @@
 import { Member } from './../../_models/member';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { TaskService } from './../../_services';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidationErrors } from '@angular/forms';
@@ -17,7 +17,7 @@ declare var task: any;
   templateUrl: './addOrEditTasks.component.html'
 })
 
-export class AddOrEditTasksComponent implements OnInit {
+export class AddOrEditTasksComponent implements OnInit, OnChanges {
   taskId: string;
   task: Task;
   editTaskForm: FormGroup;
@@ -30,10 +30,14 @@ export class AddOrEditTasksComponent implements OnInit {
     this.createForm();
     this.loadTasks();
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
+    this.editTaskForm.get('sum').valueChanges.subscribe(control=>{
+      this.changeSum();
+      console.log('changesum');
+    });
   }
 
-  ngAfterViewChecked() {
-    this.changeSum();
+  ngOnChanges(changes) {
+    console.log(changes)
   }
 
   get taskMembers(): FormArray {
@@ -71,19 +75,25 @@ export class AddOrEditTasksComponent implements OnInit {
       name: ['', Validators.required],
       sum: ['0', [Validators.required, Validators.min(0)]],
       members: this.formBuilder.array([])
-    }, { validator: this.SumValidator });
+    });
     //this.addTaskMember();
   }
 
-  SumValidator(fg: FormGroup) {
+  sumValidator() {
+    let fg = this.editTaskForm;
+    var depositInputs = document.getElementsByClassName("deposit");
+    var debtsInputs = document.getElementsByClassName("saveDebt");
+    if(depositInputs.length==0) return;
+
+    console.log(this.editTaskForm);
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
-    let sumDeposit = 0;
-    let sumDebt = 0;
-    fg.get('members').value.forEach(element => {
-      sumDeposit += (<Member>element).deposit;
-      sumDebt += (<Member>element).debt;
-    });
+
+    var sumDeposit = this.CalculateSum(depositInputs, depositInputs.length);
+    var sumDebt = this.CalculateSum(debtsInputs, debtsInputs.length);
+
+    console.log('debt '+ sumDebt);
+    console.log('deposit '+ sumDeposit);
 
 
     if (sumDeposit != sumValue && sumDebt != sumValue) {
@@ -123,12 +133,20 @@ export class AddOrEditTasksComponent implements OnInit {
     });
   }
 
-  saveTask() {
+  saveTask(fg:FormGroup) {
     let formValue = this.editTaskForm;
+    console.log(formValue);
     this.task.name = formValue.get('name').value;
     this.task.sum = formValue.get('sum').value;
     this.task.members = [];
-    formValue.get('members').value.forEach(element => {
+
+    var depositInputs = document.getElementsByClassName("deposit");
+    var debtsInputs = document.getElementsByClassName("saveDebt");
+
+    formValue.get('members').value.forEach((element,index) => {
+      let member=<Member>element;
+      member.deposit = depositInputs[index]['value'];
+      member.debt = debtsInputs[index]['value'];
       this.task.members.push(<Member>element);
     });
     this.taskService.save(this.task).subscribe();
@@ -146,7 +164,6 @@ export class AddOrEditTasksComponent implements OnInit {
     var sumInputElem = document.getElementById("Sum");
     if(sumInputElem===null) return;
     var sumInput = sumInputElem['value'];
-    console.log('sumInput='+sumInput);
 
     //change first field "deposit"
     var depositInputs = document.getElementsByClassName("deposit");
@@ -161,10 +178,9 @@ export class AddOrEditTasksComponent implements OnInit {
       var debtsEditSum = 0;
       //caclulate sum without this fields
       debtsEditSum = this.CalculateSum(debtsEditInputs, debtsEditInputs.length);
-      console.log('debtsEditSum='+debtsEditSum);
 
       sumInput -= debtsEditSum;
-      console.log('newsumInput='+sumInput);
+
       if (sumInput < 0) {
         sumInputElem.style.color = "red";
         return;
@@ -215,10 +231,10 @@ export class AddOrEditTasksComponent implements OnInit {
     }
   }
 
-  changeDebt(i) {
-    console.log(i.path[0].classList);
-    i.path[0].classList.add("editing");
-    i.path[0].classList.remove("debt");
+  changeDebt(editedInput) {
+    this.sumValidator();
+    editedInput.path[0].classList.add('editing');
+    editedInput.path[0].classList.remove('debt');
   }
 
 

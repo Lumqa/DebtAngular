@@ -34,7 +34,7 @@
   <ng-template #elseBlock>
     <h4>Add task {{task.name}}</h4>
   </ng-template>
-  <form [formGroup]="editTaskForm" (submit)="saveTask()">
+  <form [formGroup]="editTaskForm" (submit)="saveTask(editTaskForm)">
     <div class="form-inline">
       <input formControlName="taskId" type="hidden" />
       <input formControlName="userId" type="hidden" />
@@ -47,7 +47,7 @@
 
       <div>
         <label for="sum">Sum</label>
-        <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" (keyup)="changeSum()" />
+        <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" (keyup)="sumValidator()" />
         <div *ngIf="editTaskForm.get('sum').touched && editTaskForm.get('sum').errors">
           <label *ngIf="editTaskForm.get('sum').errors?.required" class="text-danger">Sum can't be empty.</label>
           <label *ngIf="editTaskForm.get('sum').errors?.min" class="text-danger">The Sum can't be negative.</label>
@@ -76,7 +76,7 @@
           <div *ngIf="item.get('name').errors">
             <label *ngIf="item.get('name').errors?.required" class="text-danger">Name can't be empty.</label>
           </div>
-          <input type="number" formControlName="deposit" class="form-control m-2 deposit" (change)="changeDeposit()" />
+          <input type="number" formControlName="deposit" class="form-control m-2 deposit" (keyup)="changeDeposit()" />
           <div *ngIf="item.get('deposit').errors">
             <label *ngIf="item.get('deposit').errors?.required" class="text-danger">Deposit can't be empty.</label>
             <label *ngIf="item.get('deposit').errors?.min" class="text-danger">Deposit can't be negative.</label>
