@@ -81,7 +81,7 @@
             <label *ngIf="item.get('deposit').errors?.required" class="text-danger">Deposit can't be empty.</label>
             <label *ngIf="item.get('deposit').errors?.min" class="text-danger">Deposit can't be negative.</label>
           </div>
-          <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (change)="changeDebt(this)"/>
+          <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (keyup)="changeDebt($event)"/>
           <div *ngIf="item.get('debt').errors">
             <label *ngIf="item.get('debt').errors?.required" class="text-danger">Debt can't be empty.</label>
             <label *ngIf="item.get('debt').errors?.min" class="text-danger">Debt can't be negative.</label>

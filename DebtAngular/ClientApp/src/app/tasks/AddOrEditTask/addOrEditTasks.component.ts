@@ -71,7 +71,7 @@ export class AddOrEditTasksComponent implements OnInit {
       name: ['', Validators.required],
       sum: ['0', [Validators.required, Validators.min(0)]],
       members: this.formBuilder.array([])
-    }, { validator: this.SumValidator});
+    }, { validator: this.SumValidator });
     //this.addTaskMember();
   }
 
@@ -155,7 +155,7 @@ export class AddOrEditTasksComponent implements OnInit {
     this.changeDeposit();
 
     //get all inputs with manual edit value
-    var debtsEditInputs = document.getElementsByClassName("debtediting");
+    var debtsEditInputs = document.getElementsByClassName("editing");
 
     if (debtsEditInputs.length != 0) {
       var debtsEditSum = 0;
@@ -215,8 +215,10 @@ export class AddOrEditTasksComponent implements OnInit {
     }
   }
 
-  changeDebt(editedInput) {
-    editedInput.className += "editing";
+  changeDebt(i) {
+    console.log(i.path[0].classList);
+    i.path[0].classList.add("editing");
+    i.path[0].classList.remove("debt");
   }
 
 
