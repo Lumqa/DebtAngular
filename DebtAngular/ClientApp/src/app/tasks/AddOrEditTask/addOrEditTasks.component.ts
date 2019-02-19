@@ -35,6 +35,9 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       console.log('changesum');
     });
   }
+  ngAfterViewChecked() {
+    this.changeSum();
+  }
 
   ngOnChanges(changes) {
     console.log(changes)
@@ -52,7 +55,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     }
   }
 
-  addMember(){
+  addMember() {
     this.addTaskMember();
     console.log('log');
   }
