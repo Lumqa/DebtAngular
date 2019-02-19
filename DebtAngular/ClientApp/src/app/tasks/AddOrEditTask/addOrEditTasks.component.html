@@ -40,24 +40,26 @@
       <input formControlName="userId" type="hidden" />
       <div style="margin-right:10px;">
         <label for="name">Name</label>
-        <input formControlName="name" class="form-control nameInput" />
-        <label *ngIf="editTaskForm.get('name').touched && editTaskForm.get('name').errors?.required"
-          class="text-danger">Name can't be empty.</label>
-      </div>
+          <div class="form-inline m-2 d-flex flex-column">
+          <input formControlName="name" class="form-control nameInput" />
+          <label class="text-danger-name"><span class="text-danger" *ngIf="editTaskForm.get('name').touched && editTaskForm.get('name').errors?.required">Name can't be empty.</span></label>
+          </div>
+        </div>
 
       <div>
         <label for="sum">Sum</label>
-        <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" (keyup)="sumValidator()" />
-        <div *ngIf="editTaskForm.get('sum').touched && editTaskForm.get('sum').errors">
-          <label *ngIf="editTaskForm.get('sum').errors?.required" class="text-danger">Sum can't be empty.</label>
-          <label *ngIf="editTaskForm.get('sum').errors?.min" class="text-danger">The Sum can't be negative.</label>
+        <div class="form-inline m-2 d-flex flex-column">
+          <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" (keyup)="sumValidator()" />
+          <div class="text-danger-sum">
+            <div *ngIf="editTaskForm.get('sum').touched && editTaskForm.get('sum').errors">
+              <span *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</span>
+              <span *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</span>
+            </div>
+            <span id="errorsum" class="text-danger"></span>
+          </div>
         </div>
-        <label *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger">Sum of deposits not equal
-          Sum.</label>
-        <label *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal
-          Sum.</label>
+        </div>
       </div>
-    </div>
     <div id="divMembers">
       <h4>Members</h4>
       <button type="button" (click)="addMember()" class="btn btn-primary m-1">Add Member</button>
@@ -72,21 +74,33 @@
       <div formArrayName="members">
         <div class="form-inline" *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
           <input type="hidden" formControlName="id" />
-          <input formControlName="name" class="form-control m-2 " />
-          <div *ngIf="item.get('name').errors">
-            <label *ngIf="item.get('name').errors?.required" class="text-danger">Name can't be empty.</label>
+          <div class="form-inline d-flex flex-column">
+            <input formControlName="name" class="form-control m-2 " />
+            <div class="text-danger">
+              <div *ngIf="item.get('name').errors">
+                <span *ngIf="item.get('name').errors?.required">Name can't be empty.</span>
+              </div>
+            </div>
           </div>
-          <input type="number" formControlName="deposit" class="form-control m-2 deposit" (keyup)="changeDeposit()" />
-          <div *ngIf="item.get('deposit').errors">
-            <label *ngIf="item.get('deposit').errors?.required" class="text-danger">Deposit can't be empty.</label>
-            <label *ngIf="item.get('deposit').errors?.min" class="text-danger">Deposit can't be negative.</label>
+          <div class="form-inline d-flex flex-column">
+            <input type="number" formControlName="deposit" class="form-control m-2 deposit" (keyup)="changeDeposit()" />
+            <div class="text-danger">
+              <div *ngIf="item.get('deposit').errors">
+                <span *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</span>
+                <span *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</span>
+              </div>
+            </div>
           </div>
-          <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (keyup)="changeDebt($event)"/>
-          <div *ngIf="item.get('debt').errors">
-            <label *ngIf="item.get('debt').errors?.required" class="text-danger">Debt can't be empty.</label>
-            <label *ngIf="item.get('debt').errors?.min" class="text-danger">Debt can't be negative.</label>
+          <div class="form-inline d-flex flex-column">
+            <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (keyup)="changeDebt($event)" />
+            <div class="text-danger">
+              <div *ngIf="item.get('debt').errors">
+                <span *ngIf="item.get('debt').errors?.required">Debt can't be empty.</span>
+                <span *ngIf="item.get('debt').errors?.min">Debt can't be negative.</span>
+              </div>
+            </div>
           </div>
-          <button class="btn btn-danger" (click)="deleteMember(idx)">x</button>
+          <button class="btn btn-danger removemember" (click)="deleteMember(idx)">x</button>
         </div>
       </div>
     </div>
