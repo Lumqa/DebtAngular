@@ -75,10 +75,9 @@ body {
   height: 45px;
 }
 
-.swal-modal {
-  margin-bottom: 15% !important;
+.btn-validation, label[for=Name], label[for=Sum] {
+  margin-bottom: 24px;
 }
-
 
 .field-validation-valid {
   height: 24px;
@@ -112,4 +111,16 @@ input[type="checkbox"].input-validation-error {
   font-size: 20px;
   text-align: center;
   width: 217px;
+}
+
+.text-danger-name, .text-danger-sum{
+  min-height: 43px;
+}
+.text-danger {
+  font-size: 14px;
+  min-height: 21px;
+}
+
+.removemember {
+  margin-bottom:24px;
 }

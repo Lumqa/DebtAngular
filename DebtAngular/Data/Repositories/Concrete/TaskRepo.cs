@@ -25,21 +25,26 @@ namespace DebtAngular.Data.Repositories.Concrete
             return taskModels;
         }
 
-        public TaskModel GetValue(Guid taskId)
+        public TaskModel GetValue(int taskId)
         {
-            var task = Tasks.First(t => t.Id == taskId);
-            TaskModel taskModel = new TaskModel
+            try { 
+
+                var task = Tasks.ElementAt(taskId-1);
+                TaskModel taskModel = new TaskModel
+                {
+                    Name = task.Name,
+                    Sum = task.Sum,
+                    Id = task.Id,
+                    UserId = task.UserId,
+                    Members = task.Members.Select(m => m.Map()).ToList(),
+                    Debts = task.Debts.Select(d=>d.Map()).ToList()
+                };
+                return taskModel;
+            }
+            catch (Exception e)
             {
-                Name = task.Name,
-                Sum = task.Sum,
-                Id = task.Id,
-                UserId = task.UserId,
-                Members = task.Members.Select(m => m.Map()).ToList(),
-                Debts = task.Debts.Select(d=>d.Map()).ToList()
-            };
-
-
-            return taskModel;
+                return null;
+            }
         }
 
         public void Delete(string taskId)

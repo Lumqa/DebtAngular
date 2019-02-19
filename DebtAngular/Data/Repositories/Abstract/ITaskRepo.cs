@@ -9,7 +9,7 @@ namespace DebtAngular.Data.Repositories.Abstract
     {
         IEnumerable<TaskModel> GetAll(string userId);
 
-        TaskModel GetValue(Guid taskId);
+        TaskModel GetValue(int taskId);
         void Delete(string taskId);
         void Save(Task task, string userid);
         void Save(TaskModel taskModel, string userid);

@@ -14,9 +14,9 @@
   </thead>
   <tbody>
 
-    <tr *ngFor="let item of tasks">
+    <tr *ngFor="let item of tasks; let idx = index">
       <td>
-        <a routerLink="/addOrEditTask" [queryParams]="{'taskId':item['id']}">{{item['name']}}</a>
+        <a routerLink="/addOrEditTask" [queryParams]="{'taskId':idx+1}">{{item['name']}}</a>
       </td>
       <td>
         {{item['sum']}}
