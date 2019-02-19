@@ -32,6 +32,10 @@ export class AddOrEditTasksComponent implements OnInit {
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
   }
 
+  ngAfterViewChecked() {
+    this.changeSum();
+  }
+
   get taskMembers(): FormArray {
     return (this.editTaskForm.get('members') as FormArray);
   }
@@ -46,8 +50,7 @@ export class AddOrEditTasksComponent implements OnInit {
 
   addMember(){
     this.addTaskMember();
-    debugger;
-    this.changeSum();
+    console.log('log');
   }
 
   fillingMemberData(member: Member) {
@@ -141,11 +144,13 @@ export class AddOrEditTasksComponent implements OnInit {
   changeSum() {
     //value in sum field
     var sumInputElem = document.getElementById("Sum");
+    if(sumInputElem===null) return;
     var sumInput = sumInputElem['value'];
+    console.log('sumInput='+sumInput);
 
     //change first field "deposit"
     var depositInputs = document.getElementsByClassName("deposit");
-    console.log(depositInputs.length);
+    if(depositInputs.length===0) return;
     depositInputs[0]['value'] = sumInput;
     this.changeDeposit();
 
@@ -156,8 +161,10 @@ export class AddOrEditTasksComponent implements OnInit {
       var debtsEditSum = 0;
       //caclulate sum without this fields
       debtsEditSum = this.CalculateSum(debtsEditInputs, debtsEditInputs.length);
+      console.log('debtsEditSum='+debtsEditSum);
 
       sumInput -= debtsEditSum;
+      console.log('newsumInput='+sumInput);
       if (sumInput < 0) {
         sumInputElem.style.color = "red";
         return;
