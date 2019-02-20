@@ -57,7 +57,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   addMember() {
     this.addTaskMember();
-    console.log('log');
   }
 
   fillingMemberData(member: Member) {
@@ -88,7 +87,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     var debtsInputs = document.getElementsByClassName("saveDebt");
     if(depositInputs.length==0) return;
 
-    console.log(this.editTaskForm);
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
 
@@ -138,7 +136,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   saveTask(fg:FormGroup) {
     let formValue = this.editTaskForm;
-    console.log(formValue);
     this.task.name = formValue.get('name').value;
     this.task.sum = formValue.get('sum').value;
     this.task.members = [];
@@ -242,16 +239,8 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
 
   changeDeposit() {
-    var sumInput = document.getElementById("Sum");
-    var depositInputs = document.getElementsByClassName("deposit");
-
-    var sumDeposits = this.CalculateSum(depositInputs, depositInputs.length);
-    var sumInput = document.getElementById("Sum");
-    if (sumDeposits !== sumInput['value']) {
-      sumInput.style.color = "red";
-    } else {
-      sumInput.style.color = "black";
-    }
+    this.sumValidator();
+    
   }
   //replace all sum calc
   CalculateSum(inputs, length) {
