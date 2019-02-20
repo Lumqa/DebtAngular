@@ -93,10 +93,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     var sumDeposit = this.CalculateSum(depositInputs, depositInputs.length);
     var sumDebt = this.CalculateSum(debtsInputs, debtsInputs.length);
 
-    console.log('debt '+ sumDebt);
-    console.log('deposit '+ sumDeposit);
-
-
     if (sumDeposit != sumValue && sumDebt != sumValue) {
       sumControl.setErrors({ DepositSumError: true, DebtSumError: true });
     }
@@ -201,7 +197,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
     //get error
     var error = parseFloat((sumInput - sumWithError).toFixed(2));
-
+    
     //global iterator for set correct debt value
     var iterator = 0;
     if (error != 0) {
@@ -211,12 +207,12 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
         //check sign and inc or dec value for correct value
         switch (sign) {
           case false:
-            error += 0.01;
+            error = parseFloat((error+0.01).toFixed(2));
             debtsInputs[iterator]['value'] = (basicValueWithError - 0.01).toFixed(2);
             break;
 
           case true:
-            error -= 0.01;
+            error = parseFloat((error-0.01).toFixed(2));
             debtsInputs[iterator]['value'] = (basicValueWithError + 0.01).toFixed(2);
             break;
         }
