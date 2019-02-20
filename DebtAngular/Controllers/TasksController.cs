@@ -67,14 +67,14 @@ namespace DebtAngular.Controllers
             Dictionary<string, double> debtors = new Dictionary<string, double>();
             foreach (var member in memberList)
             {
-                double balance = member.Debt - member.Deposit;
+                double balance = Math.Round(member.Debt - member.Deposit,2);
                 if (balance > 0)
                 {
                     debtors.Add(member.Name, balance);
                 }
                 if (balance < 0)
                 {
-                    creditors.Add(member.Name, balance);
+                    creditors.Add(member.Name, Math.Round(balance, 2));
                 }
             }
 
@@ -92,8 +92,8 @@ namespace DebtAngular.Controllers
                 {
                     var debtor = debtors.ElementAt(debtorIter);
                     debt = Math.Min(Math.Abs(creditor.Value), debtor.Value);
-                    debtors[debtor.Key] -= debt;
-                    creditors[creditor.Key] += debt;
+                    debtors[debtor.Key] = Math.Round(debtors[debtor.Key] - debt, 2);
+                    creditors[creditor.Key] = Math.Round(creditors[creditor.Key] + debt,2);
 
                     debtsTable.Add(new DebtModel
                     {

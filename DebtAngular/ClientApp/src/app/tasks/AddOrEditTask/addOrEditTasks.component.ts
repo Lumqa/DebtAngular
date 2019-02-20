@@ -32,7 +32,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
     this.editTaskForm.get('sum').valueChanges.subscribe(control=>{
       this.changeSum();
-      console.log('changesum');
     });
   }
   //ngAfterViewChecked() {
@@ -40,7 +39,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   //}
 
   ngOnChanges(changes) {
-    console.log(changes)
   }
 
   get taskMembers(): FormArray {
@@ -90,8 +88,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     var depositInputs = document.getElementsByClassName("deposit");
     var debtsInputs = document.getElementsByClassName("saveDebt");
     if(depositInputs.length==0) return;
-
-    console.log(this.editTaskForm);
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
 
@@ -166,20 +162,18 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   //JS OPERATIONS
    changeSum() {
-    //value in sum field
+     //value in sum field
     var sumInputElem = document.getElementById("Sum");
     if(sumInputElem===null) return;
     var sumInput = sumInputElem['value'];
-
     //change first field "deposit"
     var depositInputs = document.getElementsByClassName("deposit");
     if(depositInputs.length===0) return;
     depositInputs[0]['value'] = sumInput;
-    this.changeDeposit();
 
     //get all inputs with manual edit value
-    var debtsEditInputs = document.getElementsByClassName("editing");
-
+     var debtsEditInputs = document.getElementsByClassName("editing");
+     debugger;
     if (debtsEditInputs.length != 0) {
       var debtsEditSum = 0;
       //caclulate sum without this fields
@@ -234,7 +228,9 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     while (iterator < debtsLength) {
       debtsInputs[iterator]['value'] = basicValueWithError;
       iterator++;
-    }
+     }
+     
+    this.changeDeposit();
   }
 
   changeDebt(editedInput) {
@@ -253,6 +249,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     for (var iterator = 0; iterator < length; iterator++) {
       sum += parseFloat(inputs[iterator].value);
     }
-    return sum;
+    return parseFloat(sum.toFixed(2));
   }
 }
