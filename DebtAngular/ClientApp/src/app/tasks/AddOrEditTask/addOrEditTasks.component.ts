@@ -118,19 +118,19 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   nameValidator(index) {
     var nameInputs = document.getElementsByClassName('name');
-    console.log(nameInputs[index]['value']);
-    var temp = 0;
+    let dupNames = [];
     var editedInput = nameInputs[index]['value'];
     for (var i = 0; i < nameInputs.length; i++) {
-      if ((editedInput === nameInputs[i]['value'])) {
-        temp++;
-        if (temp > 1) { 
-          this.taskMembers.controls[index].get('name').setErrors({ match: true });
-        }
+      this.taskMembers.controls[i].get('name').updateValueAndValidity();
+      if ((editedInput === nameInputs[i]['value'] && index!=i)) {
+        dupNames.push(i);
       }
-      
     }
-    this.taskMembers.controls[index].get('name').setErrors(null);
+    dupNames.push(index);
+    if(dupNames.length>1)
+    dupNames.forEach(index=>{
+      this.taskMembers.controls[index].get('name').setErrors({ match: true });
+    });
   }
 
   deleteMember(index: number) {
