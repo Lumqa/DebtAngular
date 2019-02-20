@@ -31,13 +31,13 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     this.loadTasks();
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
     this.editTaskForm.get('sum').valueChanges.subscribe(control=>{
-      this.changeSum();
+      //this.changeSum();
       console.log('changesum');
     });
   }
-  ngAfterViewChecked() {
-    this.changeSum();
-  }
+  //ngAfterViewChecked() {
+  //  this.changeSum();
+  //}
 
   ngOnChanges(changes) {
     console.log(changes)
@@ -55,8 +55,12 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     }
   }
 
+  resolveAfterSeconds(x) {
+    return new Promise(resolve => { setTimeout(() => { resolve(x); }, 0);});
+  }
+
   addMember() {
-    this.addTaskMember();
+    this.resolveAfterSeconds(this.addTaskMember()).then(() => {this.changeSum();});
   }
 
   fillingMemberData(member: Member) {
@@ -87,11 +91,16 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     var debtsInputs = document.getElementsByClassName("saveDebt");
     if(depositInputs.length==0) return;
 
+    console.log(this.editTaskForm);
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
 
     var sumDeposit = this.CalculateSum(depositInputs, depositInputs.length);
     var sumDebt = this.CalculateSum(debtsInputs, debtsInputs.length);
+
+    console.log('debt '+ sumDebt);
+    console.log('deposit '+ sumDeposit);
+
 
     if (sumDeposit != sumValue && sumDebt != sumValue) {
       sumControl.setErrors({ DepositSumError: true, DebtSumError: true });
@@ -112,7 +121,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   deleteMember(index: number) {
-    this.taskMembers.removeAt(index);
+    this.resolveAfterSeconds(this.taskMembers.removeAt(index)).then(() => {this.changeSum();});
   }
 
   loadTasks(): any {
@@ -132,6 +141,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   saveTask(fg:FormGroup) {
     let formValue = this.editTaskForm;
+    console.log(formValue);
     this.task.name = formValue.get('name').value;
     this.task.sum = formValue.get('sum').value;
     this.task.members = [];
@@ -155,7 +165,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   // }
 
   //JS OPERATIONS
-  changeSum() {
+   changeSum() {
     //value in sum field
     var sumInputElem = document.getElementById("Sum");
     if(sumInputElem===null) return;
@@ -197,7 +207,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
     //get error
     var error = parseFloat((sumInput - sumWithError).toFixed(2));
-    
+
     //global iterator for set correct debt value
     var iterator = 0;
     if (error != 0) {
@@ -207,12 +217,12 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
         //check sign and inc or dec value for correct value
         switch (sign) {
           case false:
-            error = parseFloat((error+0.01).toFixed(2));
+            error += 0.01;
             debtsInputs[iterator]['value'] = (basicValueWithError - 0.01).toFixed(2);
             break;
 
           case true:
-            error = parseFloat((error-0.01).toFixed(2));
+            error -= 0.01;
             debtsInputs[iterator]['value'] = (basicValueWithError + 0.01).toFixed(2);
             break;
         }
@@ -235,8 +245,16 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
 
   changeDeposit() {
-    this.sumValidator();
-    
+    var sumInput = document.getElementById("Sum");
+    var depositInputs = document.getElementsByClassName("deposit");
+
+    var sumDeposits = this.CalculateSum(depositInputs, depositInputs.length);
+    var sumInput = document.getElementById("Sum");
+    if (sumDeposits !== sumInput['value']) {
+      sumInput.style.color = "red";
+    } else {
+      sumInput.style.color = "black";
+    }
   }
   //replace all sum calc
   CalculateSum(inputs, length) {

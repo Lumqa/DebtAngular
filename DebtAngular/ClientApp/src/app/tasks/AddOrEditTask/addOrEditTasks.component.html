@@ -56,10 +56,10 @@
               <span *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</span>
             </div>
             <span id="errorsum" class="text-danger">
-              <span *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger">Sum of deposits not equal
-                Sum.</span>
-              <span *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal
-                Sum.</span>
+              <label *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger">Sum of deposits not equal
+                Sum.</label>
+              <label *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal
+                Sum.</label>
             </span>
           </div>
         </div>
