@@ -31,7 +31,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     this.loadTasks();
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
     this.editTaskForm.get('sum').valueChanges.subscribe(control=>{
-      //this.changeSum();
+      this.changeSum();
       console.log('changesum');
     });
   }
@@ -217,12 +217,12 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
         //check sign and inc or dec value for correct value
         switch (sign) {
           case false:
-            error += 0.01;
+            error = parseFloat((error + 0.01).toFixed(2));
             debtsInputs[iterator]['value'] = (basicValueWithError - 0.01).toFixed(2);
             break;
 
           case true:
-            error -= 0.01;
+            error = parseFloat((error - 0.01).toFixed(2));
             debtsInputs[iterator]['value'] = (basicValueWithError + 0.01).toFixed(2);
             break;
         }
@@ -245,16 +245,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
 
   changeDeposit() {
-    var sumInput = document.getElementById("Sum");
-    var depositInputs = document.getElementsByClassName("deposit");
-
-    var sumDeposits = this.CalculateSum(depositInputs, depositInputs.length);
-    var sumInput = document.getElementById("Sum");
-    if (sumDeposits !== sumInput['value']) {
-      sumInput.style.color = "red";
-    } else {
-      sumInput.style.color = "black";
-    }
+    this.sumValidator();
   }
   //replace all sum calc
   CalculateSum(inputs, length) {
