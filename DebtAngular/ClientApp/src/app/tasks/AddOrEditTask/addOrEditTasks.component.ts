@@ -87,6 +87,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     let fg = this.editTaskForm;
     var depositInputs = document.getElementsByClassName("deposit");
     var debtsInputs = document.getElementsByClassName("saveDebt");
+    var nameInputs = document.getElementsByClassName("name");
     if(depositInputs.length==0) return;
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
@@ -96,7 +97,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
     console.log('debt '+ sumDebt);
     console.log('deposit '+ sumDeposit);
-
 
     if (sumDeposit != sumValue && sumDebt != sumValue) {
       sumControl.setErrors({ DepositSumError: true, DebtSumError: true });
@@ -114,6 +114,23 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  nameValidator(index) {
+    var nameInputs = document.getElementsByClassName('name');
+    console.log(nameInputs[index]['value']);
+    var temp = 0;
+    var editedInput = nameInputs[index]['value'];
+    for (var i = 0; i < nameInputs.length; i++) {
+      if ((editedInput === nameInputs[i]['value'])) {
+        temp++;
+        if (temp > 1) { 
+          this.taskMembers.controls[index].get('name').setErrors({ match: true });
+        }
+      }
+      
+    }
+    this.taskMembers.controls[index].get('name').setErrors(null);
   }
 
   deleteMember(index: number) {
@@ -173,7 +190,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
     //get all inputs with manual edit value
      var debtsEditInputs = document.getElementsByClassName("editing");
-     debugger;
     if (debtsEditInputs.length != 0) {
       var debtsEditSum = 0;
       //caclulate sum without this fields

@@ -80,10 +80,11 @@
         <div class="form-inline" *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
           <input type="hidden" formControlName="id" />
           <div class="form-inline d-flex flex-column">
-            <input formControlName="name" class="form-control m-2 " />
+            <input formControlName="name" class="form-control m-2 name" (keyup)="nameValidator(idx)"/>
             <div class="text-danger">
               <div *ngIf="item.get('name').errors">
                 <span *ngIf="item.get('name').errors?.required">Name can't be empty.</span>
+                <span *ngIf="item.get('name').errors?.qweqwe">Name can't be empty.</span>
               </div>
             </div>
           </div>
