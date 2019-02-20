@@ -253,6 +253,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     for (var iterator = 0; iterator < length; iterator++) {
       sum += parseFloat(inputs[iterator].value);
     }
-    return sum;
+    return parseFloat(sum.toFixed(0));
   }
 }
