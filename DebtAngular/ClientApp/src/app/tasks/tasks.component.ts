@@ -13,15 +13,18 @@ export class TasksComponent implements OnInit {
 
   tasks: Task[] = [];
   constructor(private taskService: TaskService, route: ActivatedRoute) {
+    
+    //this.loadTasks();
     route.params.subscribe(val => {
-      console.log('return');
       this.loadTasks();
     });}
+
   ngOnInit() {
     this.loadTasks();
   }
 
   loadTasks(): any {
+    this.tasks=[];
     this.taskService.getAll().pipe(first()).subscribe(tasks => {
       this.tasks = tasks;
     });
