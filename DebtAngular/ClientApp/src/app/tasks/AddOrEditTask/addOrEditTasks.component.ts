@@ -168,8 +168,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       member.debt = debtsInputs[index]['value'];
       this.task.members.push(<Member>element);
     });
-    this.taskService.save(this.task).subscribe();
-    this.router.navigate(['tasks']);
+    this.taskService.save(this.task).subscribe(() => this.router.navigate(['tasks']));
   }
 
   // changeSumAngular(){

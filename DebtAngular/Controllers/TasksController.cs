@@ -4,11 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using DebtAngular.Data.Repositories.Abstract;
 using DebtAngular.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace DebtAngular.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : Controller
