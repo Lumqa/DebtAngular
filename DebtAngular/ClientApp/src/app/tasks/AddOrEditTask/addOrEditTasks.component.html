@@ -1,34 +1,3 @@
-<!-- <div *ngIf="task">
-  <h4 *ngIf="task.id !== '00000000-0000-0000-0000-000000000000'; else elseBlock">Edit {{task.name}}</h4>
-  <ng-template #elseBlock><h4>Add task {{task.name}}</h4></ng-template>
-  <div class="form-inline">
-    <input type="hidden" [(ngModel)]="task.id" />
-    <input type="hidden" [(ngModel)]="task.userid" />
-    <label for="Name">Name</label>
-    <input class="form-control m-2" [(ngModel)]="task.name" />
-    <label for="Sum">Sum</label>
-    <input class="form-control m-2" onkeyup="changeSum()" [(ngModel)]="task.sum" />
-  </div>
-  <div id="divMembers">
-    <h4>Members</h4>
-    <button type="button" (click)="addTaskMember()" class="btn btn-primary m-1">Add Member</button>
-    <button type="button" (click)="save()" class="btn btn-success m-1">Save</button>
-    <table class="memberstable">
-      <tr>
-        <th>Name</th>
-        <th>Deposit</th>
-        <th>Debt</th>
-      </tr>
-    </table>
-    <div class="form-inline" *ngFor="let item of task?.members">
-      <input type="hidden" [(ngModel)]="item.id">
-      <input class="form-control m-2" [(ngModel)]="item.name">
-      <input class="form-control m-2" [(ngModel)]="item.deposit">
-      <input class="form-control m-2" [(ngModel)]="item.debt">
-      <button class="btn btn-danger" (click)="delete(item)">x</button>
-    </div>
-  </div>
-</div> -->
 <div *ngIf="task">
   <h4 *ngIf="task.id !== '00000000-0000-0000-0000-000000000000'; else elseBlock">Edit {{task.name}}</h4>
   <ng-template #elseBlock>

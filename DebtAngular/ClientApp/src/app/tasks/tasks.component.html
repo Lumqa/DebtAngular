@@ -22,7 +22,7 @@
         {{item['sum']}}
       </td>
       <td>
-        <div *ngFor="let debtor of item['members']">
+        <div *ngFor="let debtor of item['members']" class="mx-1 tdmember">
           <a routerLink="/debts" [queryParams]="{'memberId':debtor['id']}">{{debtor['name']}}</a>
         </div>
       </td>

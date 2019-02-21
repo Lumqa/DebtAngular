@@ -124,3 +124,13 @@ input[type="checkbox"].input-validation-error {
 .removemember {
   margin-bottom:24px;
 }
+
+.notfound{
+  font-size: 64px;
+  color: lightslategray;
+}
+
+.tdmember{
+  display: inline-block;
+  border: 0!important;
+}
