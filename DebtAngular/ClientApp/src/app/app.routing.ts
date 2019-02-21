@@ -12,9 +12,9 @@ const appRoutes: Routes = [
     { path: '', component: TasksComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'tasks', component: TasksComponent },
-    { path: 'debts', component: DebtsComponent },
-    { path: 'addOrEditTask', component: AddOrEditTasksComponent },
+    { path: 'tasks', component: TasksComponent, canActivate: [AuthGuard] },
+    { path: 'debts', component: DebtsComponent, canActivate: [AuthGuard] },
+    { path: 'addOrEditTask', component: AddOrEditTasksComponent, canActivate: [AuthGuard] },
     { path: '404', component: NotFoundComponent },
 
     // otherwise redirect to home
