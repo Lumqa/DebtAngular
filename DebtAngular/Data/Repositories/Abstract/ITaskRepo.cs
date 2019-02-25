@@ -11,7 +11,6 @@ namespace DebtAngular.Data.Repositories.Abstract
 
         TaskModel GetValue(int taskId);
         void Delete(string taskId);
-        void Save(Task task, string userid);
         void Save(TaskModel taskModel, string userid);
     }
 }

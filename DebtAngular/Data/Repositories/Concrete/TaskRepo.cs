@@ -96,24 +96,5 @@ namespace DebtAngular.Data.Repositories.Concrete
 
             _ctx.SaveChanges();
         }
-
-        public void Save(Task task, string userid)
-        {
-            if (task.Id == Guid.Empty)
-            {
-                task.Id = Guid.NewGuid();
-                task.UserId = userid;
-                foreach (var member in task.Members)
-                {
-                    member.TaskId = task.Id;
-                }
-                _ctx.Tasks.Add(task);
-            }
-            else
-            {
-                _ctx.Tasks.Update(task);
-            }
-            _ctx.SaveChanges();
-        }
     }
 }
