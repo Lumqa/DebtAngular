@@ -23,10 +23,12 @@ namespace DebtAngular.Data.Repositories.Concrete
         {
             //get needed member
             var memberName = ctx.Members.Where(m => m.Id == Guid.Parse(memberId)).Select(m=>m.Name).FirstOrDefault();
+            var taskId = ctx.Members.Where(m => m.Id == Guid.Parse(memberId)).Select(t => t.TaskId).FirstOrDefault();
+
             var debtModel = new DebtViewModel
             {
                 Name = memberName,
-                Debts = Debts.Where(d => d.Member1 == memberName || d.Member2 == memberName).Select(d => d.Map()).ToList()
+                Debts = Debts.Where(d => (d.Member1 == memberName || d.Member2 == memberName) && d.TaskId == taskId).Select(d => d.Map()).ToList()
             };
 
             return debtModel;

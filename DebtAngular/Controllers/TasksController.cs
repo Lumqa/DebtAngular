@@ -43,7 +43,7 @@ namespace DebtAngular.Controllers
 
             if (id != null)
             {
-                task = _taskRepo.GetValue((int)id);
+                task = _taskRepo.GetValue((int)id, UserId);
             }
 
             return Ok(task);
