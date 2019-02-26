@@ -1,4 +1,3 @@
-import { DoBootstrap } from "@angular/core";
 
 export class Member {
     id:string;

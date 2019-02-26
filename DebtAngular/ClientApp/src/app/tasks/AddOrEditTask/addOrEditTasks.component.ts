@@ -46,11 +46,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   addTaskMember(member?: Member): void {
-    if (member == null) {
-      this.fillingMemberData(new Member(this.taskId));
-    } else {
-      this.fillingMemberData(member);
-    }
+    this.fillingMemberData(member);
   }
 
   resolveAfterSeconds(x) {
@@ -58,17 +54,21 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   addMember() {
-    this.resolveAfterSeconds(this.addTaskMember()).then(() => {this.changeSum();});
+    let newMember = new Member(this.task.id);
+    this.task.members.push(newMember);
+    this.resolveAfterSeconds(this.addTaskMember(newMember)).then(() => {this.changeSum();});
   }
 
   fillingMemberData(member: Member) {
-    let fg = this.formBuilder.group({
+    let fg = this.formBuilder.group(
+      {
       id: [member.id],
       name: [member.name, Validators.required],
       deposit: [member.deposit, [Validators.required, Validators.min(0)]],
       debt: [member.debt, [Validators.required, Validators.min(0)]],
       taskId: [member.taskId]
-    });
+      }
+    );
     this.taskMembers.push(fg);
   }
 
@@ -85,6 +85,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   sumValidator() {
     let fg = this.editTaskForm;
+    console.log(this.task);
     var depositInputs = document.getElementsByClassName("deposit");
     var debtsInputs = document.getElementsByClassName("saveDebt");
     var nameInputs = document.getElementsByClassName("name");
@@ -134,6 +135,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   deleteMember(index: number) {
+    this.task.members.pop();
     this.resolveAfterSeconds(this.taskMembers.removeAt(index)).then(() => {this.changeSum();});
   }
 
@@ -147,14 +149,21 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
         this.editTaskForm.controls['userId'].setValue(this.task.userId);
         this.task.members.forEach((item) => { this.addTaskMember(item); });
       } else {
-        this.task = new Task();
+        this.task = new Task(); 
       }
+      //this.editTaskForm = this.formBuilder.group({
+      //  taskId: [''],
+      //  userId: [''],
+      //  name: ['', Validators.required],
+      //  sum: ['0', [Validators.required, Validators.min(0)]],
+      //  members: this.formBuilder.array([])
+      //});
+      //this.task.members.forEach((item) => { this.addTaskMember(item); });
     });
   }
 
   saveTask(fg:FormGroup) {
     let formValue = this.editTaskForm;
-    console.log(formValue);
     this.task.name = formValue.get('name').value;
     this.task.sum = formValue.get('sum').value;
     this.task.members = [];
