@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidationE
 import { Task } from './../../_models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscriber } from 'rxjs';
-import { elementStyleProp } from '@angular/core/src/render3';
 import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 declare var task: any;
 
@@ -86,15 +85,15 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   sumValidator() {
     let fg = this.editTaskForm;
     console.log(this.task);
-    var depositInputs = document.getElementsByClassName("deposit");
-    var debtsInputs = document.getElementsByClassName("saveDebt");
+    var depositInputs = this.task.members;
+    var debtsInputs = this.task.members;
     var nameInputs = document.getElementsByClassName("name");
     if(depositInputs.length==0) return;
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
 
-    var sumDeposit = this.CalculateSum(depositInputs, depositInputs.length);
-    var sumDebt = this.CalculateSum(debtsInputs, debtsInputs.length);
+    var sumDeposit = this.CalculateDepositSum(depositInputs, depositInputs.length);
+    var sumDebt = this.CalculateDebtSum(debtsInputs, debtsInputs.length);
 
     console.log('debt '+ sumDebt);
     console.log('deposit '+ sumDeposit);
@@ -135,7 +134,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   deleteMember(index: number) {
-    this.task.members.pop();
+    this.task.members.splice(index,1);
     this.resolveAfterSeconds(this.taskMembers.removeAt(index)).then(() => {this.changeSum();});
   }
 
@@ -188,33 +187,24 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   //JS OPERATIONS
    changeSum() {
      //value in sum field
-    var sumInputElem = document.getElementById("Sum");
-    if(sumInputElem===null) return;
-    var sumInput = sumInputElem['value'];
-    //change first field "deposit"
-    var depositInputs = document.getElementsByClassName("deposit");
-    if(depositInputs.length===0) return;
-    depositInputs[0]['value'] = sumInput;
+     var sumInput = this.task.sum;
+     //change first field "deposit"
+     var depositInputs = this.task.members;
+     if (depositInputs.length === 0) return;
+     depositInputs[0].deposit = sumInput;
 
     //get all inputs with manual edit value
-     var debtsEditInputs = document.getElementsByClassName("editing");
+     var debtsEditInputs = this.task.members;
     if (debtsEditInputs.length != 0) {
       var debtsEditSum = 0;
       //caclulate sum without this fields
-      debtsEditSum = this.CalculateSum(debtsEditInputs, debtsEditInputs.length);
+      debtsEditSum = this.CalculateDebtSum(debtsEditInputs, debtsEditInputs.length);
 
       sumInput -= debtsEditSum;
-
-      if (sumInput < 0) {
-        sumInputElem.style.color = "red";
-        return;
-      } else {
-        sumInputElem.style.color = "black";
-      }
     }
 
     //get all inputs with "debts"
-    var debtsInputs = document.getElementsByClassName("debt");
+     var debtsInputs = this.task.members;
     var debtsLength = debtsInputs.length;
 
     //calculate basic value
@@ -236,12 +226,12 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
         switch (sign) {
           case false:
             error = parseFloat((error + 0.01).toFixed(2));
-            debtsInputs[iterator]['value'] = (basicValueWithError - 0.01).toFixed(2);
+            debtsInputs[iterator].debt = parseFloat((basicValueWithError - 0.01).toFixed(2));
             break;
 
           case true:
             error = parseFloat((error - 0.01).toFixed(2));
-            debtsInputs[iterator]['value'] = (basicValueWithError + 0.01).toFixed(2);
+            debtsInputs[iterator].debt = parseFloat((basicValueWithError + 0.01).toFixed(2));
             break;
         }
         iterator++;
@@ -249,8 +239,8 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     }
 
     //set value for other inputs, if needed
-    while (iterator < debtsLength) {
-      debtsInputs[iterator]['value'] = basicValueWithError;
+     while (iterator < debtsLength) {
+       debtsInputs[iterator].debt = basicValueWithError;
       iterator++;
      }
      
@@ -268,10 +258,18 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     this.sumValidator();
   }
   //replace all sum calc
-  CalculateSum(inputs, length) {
+  CalculateDepositSum(inputs, length) {
     var sum = 0;
     for (var iterator = 0; iterator < length; iterator++) {
-      sum += parseFloat(inputs[iterator].value);
+      sum += parseFloat(inputs[iterator].deposit);
+    }
+    return parseFloat(sum.toFixed(2));
+  }
+
+  CalculateDebtSum(inputs, length) {
+    var sum = 0;
+    for (var iterator = 0; iterator < length; iterator++) {
+      sum += parseFloat(inputs[iterator].debt);
     }
     return parseFloat(sum.toFixed(2));
   }
