@@ -30,12 +30,11 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     this.loadTasks();
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
     this.editTaskForm.get('sum').valueChanges.subscribe(control=>{
+      this.task.sum=control;
       this.changeSum();
     });
   }
-  //ngAfterViewChecked() {
-  //  this.changeSum();
-  //}
+
 
   ngOnChanges(changes) {
   }
@@ -84,7 +83,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
 
   sumValidator() {
     let fg = this.editTaskForm;
-    console.log(this.task);
     var depositInputs = this.task.members;
     var debtsInputs = this.task.members;
     var nameInputs = document.getElementsByClassName("name");
@@ -95,8 +93,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     var sumDeposit = this.CalculateDepositSum(depositInputs, depositInputs.length);
     var sumDebt = this.CalculateDebtSum(debtsInputs, debtsInputs.length);
 
-    console.log('debt '+ sumDebt);
-    console.log('deposit '+ sumDeposit);
 
     if (sumDeposit != sumValue && sumDebt != sumValue) {
       sumControl.setErrors({ DepositSumError: true, DebtSumError: true });
@@ -150,14 +146,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       } else {
         this.task = new Task(); 
       }
-      //this.editTaskForm = this.formBuilder.group({
-      //  taskId: [''],
-      //  userId: [''],
-      //  name: ['', Validators.required],
-      //  sum: ['0', [Validators.required, Validators.min(0)]],
-      //  members: this.formBuilder.array([])
-      //});
-      //this.task.members.forEach((item) => { this.addTaskMember(item); });
     });
   }
 
@@ -179,11 +167,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     this.taskService.save(this.task).subscribe(() => this.router.navigate(['tasks']));
   }
 
-  // changeSumAngular(){
-  //   var sumInputElem = document.getElementById("Sum");
-  //   var sumInput = sumInputElem['value'];
-  // }
-
   //JS OPERATIONS
    changeSum() {
      //value in sum field
@@ -194,7 +177,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
      depositInputs[0].deposit = sumInput;
 
     //get all inputs with manual edit value
-     var debtsEditInputs = this.task.members;
+     var debtsEditInputs = [];
     if (debtsEditInputs.length != 0) {
       var debtsEditSum = 0;
       //caclulate sum without this fields
@@ -206,7 +189,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     //get all inputs with "debts"
      var debtsInputs = this.task.members;
     var debtsLength = debtsInputs.length;
-
     //calculate basic value
     var basicValueWithError = parseFloat((sumInput / debtsLength).toFixed(2));
 
