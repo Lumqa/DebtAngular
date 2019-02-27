@@ -16,6 +16,7 @@ const appRoutes: Routes = [
     { path: 'debts', component: DebtsComponent, canActivate: [AuthGuard] },
     { path: 'addOrEditTask', component: AddOrEditTasksComponent, canActivate: [AuthGuard] },
     { path: '404', component: NotFoundComponent },
+    { path: 'lazymodule', loadChildren: './lazymodule.module#LazyModuleModule' },
 
     // otherwise redirect to home
   { path: '**', redirectTo: '404' }
