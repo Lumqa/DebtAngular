@@ -18,7 +18,7 @@
       <div>
         <label for="sum">Sum</label>
         <div class="form-inline m-2 d-flex flex-column">
-          <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" [(ngModel)]="task.sum" (keyup)="sumValidator()" />
+          <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" [(ngModel)]="task.sum" (keyup)="sumValidator(); changeSum()" />
           <div class="text-danger-sum">
             <div *ngIf="editTaskForm.get('sum').touched && editTaskForm.get('sum').errors">
               <span *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</span>

@@ -30,7 +30,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
     if (this.task === undefined) this.taskId = '00000000-0000-0000-0000-000000000000';
     this.editTaskForm.get('sum').valueChanges.subscribe(control=>{
       this.task.sum=control;
-      this.changeSum();
+      //this.changeSum();
     });
     this.debtEditInputs=[];
   }
