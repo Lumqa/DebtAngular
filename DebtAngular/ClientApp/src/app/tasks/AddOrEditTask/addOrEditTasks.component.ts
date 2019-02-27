@@ -6,8 +6,6 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidationE
 
 import { Task } from './../../_models';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscriber } from 'rxjs';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 declare var task: any;
 
 
@@ -20,6 +18,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   taskId: string;
   task: Task;
   editTaskForm: FormGroup;
+  debtEditInputs:Member[];
 
   constructor(private taskService: TaskService, activateRoute: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) {
     this.taskId = activateRoute.snapshot.queryParams['taskId'];
@@ -33,6 +32,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       this.task.sum=control;
       this.changeSum();
     });
+    this.debtEditInputs=[];
   }
 
 
@@ -78,14 +78,12 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       sum: ['0', [Validators.required, Validators.min(0)]],
       members: this.formBuilder.array([])
     });
-    //this.addTaskMember();
   }
 
   sumValidator() {
     let fg = this.editTaskForm;
     var depositInputs = this.task.members;
     var debtsInputs = this.task.members;
-    var nameInputs = document.getElementsByClassName("name");
     if(depositInputs.length==0) return;
     let sumControl = fg.get('sum');
     let sumValue = sumControl.value;
@@ -113,12 +111,11 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   nameValidator(index) {
-    var nameInputs = document.getElementsByClassName('name');
     let dupNames = [];
-    var editedInput = nameInputs[index]['value'];
-    for (var i = 0; i < nameInputs.length; i++) {
+    var editedInput = this.task.members[index].name;
+    for (var i = 0; i < this.task.members.length; i++) {
       this.taskMembers.controls[i].get('name').updateValueAndValidity();
-      if ((editedInput === nameInputs[i]['value'] && index!=i)) {
+      if ((editedInput === this.task.members[i].name && index!=i)) {
         dupNames.push(i);
       }
     }
@@ -150,20 +147,6 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   saveTask(fg:FormGroup) {
-    let formValue = this.editTaskForm;
-    this.task.name = formValue.get('name').value;
-    this.task.sum = formValue.get('sum').value;
-    this.task.members = [];
-
-    var depositInputs = document.getElementsByClassName("deposit");
-    var debtsInputs = document.getElementsByClassName("saveDebt");
-
-    formValue.get('members').value.forEach((element,index) => {
-      let member=<Member>element;
-      member.deposit = depositInputs[index]['value'];
-      member.debt = debtsInputs[index]['value'];
-      this.task.members.push(<Member>element);
-    });
     this.taskService.save(this.task).subscribe(() => this.router.navigate(['tasks']));
   }
 
@@ -177,18 +160,16 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
      depositInputs[0].deposit = sumInput;
 
     //get all inputs with manual edit value
-     var debtsEditInputs = [];
-    if (debtsEditInputs.length != 0) {
+    if (this.debtEditInputs.length != 0) {
       var debtsEditSum = 0;
       //caclulate sum without this fields
-      debtsEditSum = this.CalculateDebtSum(debtsEditInputs, debtsEditInputs.length);
-
+      debtsEditSum = this.CalculateDebtSum(this.debtEditInputs, this.debtEditInputs.length);
       sumInput -= debtsEditSum;
     }
-
     //get all inputs with "debts"
-     var debtsInputs = this.task.members;
+    var debtsInputs = this.task.members.filter(n=>!this.debtEditInputs.includes(n));
     var debtsLength = debtsInputs.length;
+    if(debtsLength==0) return;
     //calculate basic value
     var basicValueWithError = parseFloat((sumInput / debtsLength).toFixed(2));
 
@@ -226,19 +207,16 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       iterator++;
      }
      
-    this.changeDeposit();
+     this.sumValidator();
   }
 
-  changeDebt(editedInput) {
+  changeDebt(index) {
     this.sumValidator();
-    editedInput.path[0].classList.add('editing');
-    editedInput.path[0].classList.remove('debt');
+    if(this.debtEditInputs.indexOf(this.task.members[index])==-1)
+    this.debtEditInputs.push(this.task.members[index]);
   }
 
 
-  changeDeposit() {
-    this.sumValidator();
-  }
   //replace all sum calc
   CalculateDepositSum(inputs, length) {
     var sum = 0;

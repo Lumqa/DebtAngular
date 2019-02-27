@@ -58,7 +58,7 @@
             </div>
           </div>
           <div class="form-inline d-flex flex-column">
-            <input type="number" formControlName="deposit" class="form-control m-2 deposit" (keyup)="changeDeposit()" [(ngModel)]="task.members[idx].deposit" />
+            <input type="number" formControlName="deposit" class="form-control m-2 deposit" (keyup)="sumValidator()" [(ngModel)]="task.members[idx].deposit" />
             <div class="text-danger">
               <div *ngIf="item.get('deposit').errors">
                 <span *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</span>
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="form-inline d-flex flex-column">
-            <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (keyup)="changeDebt($event)" [(ngModel)]="task.members[idx].debt"/>
+            <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (keyup)="changeDebt(idx)" [(ngModel)]="task.members[idx].debt"/>
             <div class="text-danger">
               <div *ngIf="item.get('debt').errors">
                 <span *ngIf="item.get('debt').errors?.required">Debt can't be empty.</span>
