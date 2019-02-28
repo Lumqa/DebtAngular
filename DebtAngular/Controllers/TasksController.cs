@@ -87,11 +87,11 @@ namespace DebtAngular.Controllers
             for (int credIter = 0; credIter < credCount; credIter++)
             {
                 double debt;
-                var creditor = creditors.ElementAt(credIter);
 
                 var debtorIter = 0;
                 while (debtors.Count != 0)
                 {
+                    var creditor = creditors.ElementAt(credIter);
                     var debtor = debtors.ElementAt(debtorIter);
                     debt = Math.Min(Math.Abs(creditor.Value), debtor.Value);
                     debtors[debtor.Key] = Math.Round(debtors[debtor.Key] - debt, 2);
@@ -124,8 +124,10 @@ namespace DebtAngular.Controllers
             {
                 var debtor = debtors.ElementAt(debtIter);
                 if (debtor.Value == 0)
+                {
                     debtors.Remove(debtor.Key);
-                debtIter--;
+                    debtIter--;
+                }
             }
         }
 
