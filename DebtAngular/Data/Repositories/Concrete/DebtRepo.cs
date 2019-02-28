@@ -33,5 +33,20 @@ namespace DebtAngular.Data.Repositories.Concrete
 
             return debtModel;
         }
+
+        public DebtViewModel GetFullInfo(string userId)
+        {
+            var membersName = ctx.Members.Where(d => d.Task.UserId == userId).Select(m=>m.Name).Distinct().ToList();
+            var debts = ctx.Debts.Where(d => d.Task.UserId == userId).Select(dm=>dm.Map()).ToList();
+
+            foreach(var member in membersName)
+            {
+                var debtForMember = debts.Where(m => m.Member1 == member || m.Member2 == member).ToList();
+
+
+            }
+            return new DebtViewModel { Debts = debts };
+        }
+
     }
 }

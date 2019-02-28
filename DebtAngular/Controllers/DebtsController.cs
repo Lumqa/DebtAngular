@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DebtAngular.Data.Repositories.Abstract;
 using DebtAngular.Models;
@@ -15,7 +16,9 @@ namespace DebtAngular.Controllers
     [ApiController]
     public class DebtsController : ControllerBase
     {
+
         private readonly IDebtRepo _debtRepo;
+        private string UserId => User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         public DebtsController(IDebtRepo debtRepository)
         {
@@ -24,9 +27,14 @@ namespace DebtAngular.Controllers
 
         [HttpGet]
         public DebtViewModel Get([FromQuery]string memberid)
-        //public ActionResult<DebtModel> Get(params string[] val)
         {
             return _debtRepo.GetAll(memberid);
+        }
+
+        [HttpGet("info")]
+        public DebtViewModel Get()
+        {
+            return _debtRepo.GetFullInfo(UserId);
         }
     }
 }
