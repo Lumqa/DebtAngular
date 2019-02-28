@@ -16,6 +16,7 @@ import { TasksComponent } from './tasks/tasks.component';
 import { DebtsComponent } from './debts/debts.component';
 import { AddOrEditTasksComponent } from './tasks/AddOrEditTask/addOrEditTasks.component';
 import { NotFoundComponent } from './notfound/notfound.component';
+import { FullInfoModule } from './debts/full-info/full-info.module';
 
 @NgModule({
     imports: [
@@ -23,7 +24,7 @@ import { NotFoundComponent } from './notfound/notfound.component';
         ReactiveFormsModule,
         HttpClientModule,
         routing,
-        FormsModule
+    FormsModule,
     ],
     declarations: [
         AppComponent,

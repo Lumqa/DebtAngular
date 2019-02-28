@@ -32,7 +32,7 @@ namespace DebtAngular.Controllers
         }
 
         [HttpGet("info")]
-        public DebtViewModel Get()
+        public DebtsFullInfoViewModel Get()
         {
             return _debtRepo.GetFullInfo(UserId);
         }

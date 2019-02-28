@@ -16,4 +16,7 @@ export class DebtsService {
     return this.http.get<Debt[]>(`${environment.apiUrl}/debts`,{params});
   }
 
+  fullInfo() {
+    return this.http.get<Debt[]>(`${environment.apiUrl}/debts/info`);
+  }
 }

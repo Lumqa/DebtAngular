@@ -30,5 +30,27 @@ namespace DebtAngular.Models.Mappings
                 TaskId = Guid.Parse(debtModel.TaskId)
             };
         }
+
+        public static DebtModel Map(this FullDebtModel fullDebtModel)
+        {
+            return new DebtModel
+            {
+                Id = fullDebtModel.Id.FirstOrDefault(),
+                Member1 = fullDebtModel.Member1,
+                Member2 = fullDebtModel.Member2,
+                Money = fullDebtModel.Money
+            };
+        }
+
+        public static FullDebtModel FullDebtMap(this DebtModel debtModel)
+        {
+            return new FullDebtModel
+            {
+                Id = new List<string>() { debtModel.Id },
+                Member1 = debtModel.Member1,
+                Member2 = debtModel.Member2,
+                Money = debtModel.Money
+            };
+        }
     }
 }

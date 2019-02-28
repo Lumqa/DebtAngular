@@ -35,12 +35,25 @@ namespace DebtAngular.Models
 
         public string TaskId { get; set; }
     }
+    public class FullDebtModel
+    {
+        public List<string> Id { get; set; }
+        public string Member1 { get; set; }
+        public string Member2 { get; set; }
+        public double Money { get; set; }
+    }
 
 
     public class DebtViewModel
     {
         public string Name { get; set; }
         public IEnumerable<DebtModel> Debts { get; set; }
+    }
+
+    public class DebtsFullInfoViewModel
+    {
+        public List<string> MemberNames { get; set; }
+        public List<DebtModel> debts { get; set; }
     }
 
 }

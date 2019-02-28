@@ -9,6 +9,6 @@ namespace DebtAngular.Data.Repositories.Abstract
     public interface IDebtRepo
     {
         DebtViewModel GetAll(string memberId);
-        DebtViewModel GetFullInfo(string userId);
+        DebtsFullInfoViewModel GetFullInfo(string userId);
     }
 }
