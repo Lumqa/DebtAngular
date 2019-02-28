@@ -71,15 +71,17 @@ export class RegisterComponent implements OnInit {
         this.userService.register(user)
             .pipe(first())
             .subscribe(
-                data => {
-                this.alertService.success('Registration successful', true);
+              data => {
                 console.log(data);
-                localStorage.setItem('currentUser', JSON.stringify(data));
-                    this.router.navigate(['/login']);
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
+                if (data['errors'] != null) {
+                  this.alertService.error(data['errors'][0]['description']);
+                  this.loading = false;
+                }
+                else {
+                  this.alertService.success('Registration successful', true);
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+                  this.router.navigate(['/login']);
+                }
+        });
     }
 }

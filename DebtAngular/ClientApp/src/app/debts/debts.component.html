@@ -18,7 +18,7 @@
         <label>{{debtor['member2']}}</label>
       </td>
       <td *ngIf="(memberName | lowercase) === (debtor['member1'] | lowercase)">
-        <label>Тебе должны {{debtor['money']}}</label>
+        <label>Тебе должен {{debtor['money']}}</label>
       </td>
       <td *ngIf="!((memberName | lowercase) === (debtor['member1'] | lowercase))">
         <label>{{debtor['member1']}}</label>

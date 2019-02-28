@@ -22,16 +22,22 @@ namespace DebtAngular.Data.Repositories.Concrete
         public DebtViewModel GetAll(string memberId)
         {
             //get needed member
-            var memberName = ctx.Members.Where(m => m.Id == Guid.Parse(memberId)).Select(m=>m.Name).FirstOrDefault();
-            var taskId = ctx.Members.Where(m => m.Id == Guid.Parse(memberId)).Select(t => t.TaskId).FirstOrDefault();
-
-            var debtModel = new DebtViewModel
+            try
             {
-                Name = memberName,
-                Debts = Debts.Where(d => (d.Member1 == memberName || d.Member2 == memberName) && d.TaskId == taskId).Select(d => d.Map()).ToList()
-            };
+                var memberName = ctx.Members.Where(m => m.Id == Guid.Parse(memberId)).Select(m => m.Name).FirstOrDefault();
+                var taskId = ctx.Members.Where(m => m.Id == Guid.Parse(memberId)).Select(t => t.TaskId).FirstOrDefault();
 
-            return debtModel;
+                var debtModel = new DebtViewModel
+                {
+                    Name = memberName,
+                    Debts = Debts.Where(d => (d.Member1 == memberName || d.Member2 == memberName) && d.TaskId == taskId).Select(d => d.Map()).ToList()
+                };
+                return debtModel;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
         }
 
         public DebtsFullInfoViewModel GetFullInfo(string userId)
@@ -57,14 +63,15 @@ namespace DebtAngular.Data.Repositories.Concrete
                         }
                         else
                         {
-                            if (fullInfoDebts.Where(fd => (fd.Member1 == item.Member1)).ToList().Count != 0)
+                            if (fullInfoDebts.Where(fd => fd.Member1 == item.Member1 && fd.Member2 == item.Member2).FirstOrDefault()!=null)
                             {
-                                fullInfoDebts.First(fd => (fd.Member1 == item.Member1)).Money += item.Money;
+                                fullInfoDebts.Where(fd => fd.Member1 == item.Member1 && fd.Member2 == item.Member2).First().Money += item.Money;
                                 matching.First().Id.Add(item.Id);
                             }
-                            else
+
+                            if (fullInfoDebts.Where(fd => fd.Member2 == item.Member1 && fd.Member1 == item.Member2).FirstOrDefault() != null)
                             {
-                                fullInfoDebts.First(fd => (fd.Member2 == item.Member1)).Money -= item.Money;
+                                fullInfoDebts.Where(fd => fd.Member2 == item.Member1 && fd.Member1 == item.Member2).First().Money -= item.Money;
                                 matching.First().Id.Add(item.Id);
                             }
                         }
