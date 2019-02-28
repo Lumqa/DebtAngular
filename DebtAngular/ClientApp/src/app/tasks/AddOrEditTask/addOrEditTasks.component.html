@@ -23,6 +23,7 @@
             <div *ngIf="editTaskForm.get('sum').touched && editTaskForm.get('sum').errors">
               <span *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</span>
               <span *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</span>
+              <span *ngIf="editTaskForm.get('sum').errors?.max">Error, max value 10,000,000.</span>
             </div>
             <span id="errorsum" class="text-danger">
               <label *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger">Sum of deposits not equal
@@ -63,6 +64,7 @@
               <div *ngIf="item.get('deposit').errors">
                 <span *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</span>
                 <span *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</span>
+                <span *ngIf="item.get('deposit').errors?.max">Error, max value 10,000,000.</span>
               </div>
             </div>
           </div>
@@ -72,6 +74,7 @@
               <div *ngIf="item.get('debt').errors">
                 <span *ngIf="item.get('debt').errors?.required">Debt can't be empty.</span>
                 <span *ngIf="item.get('debt').errors?.min">Debt can't be negative.</span>
+                <span *ngIf="item.get('debt').errors?.max">Error, max value 10,000,000.</span>
               </div>
             </div>
           </div>

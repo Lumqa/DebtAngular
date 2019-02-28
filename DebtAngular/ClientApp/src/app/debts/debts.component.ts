@@ -24,7 +24,6 @@ export class DebtsComponent implements OnInit {
     this.debtsService.getAll(this.memberId).pipe(first()).subscribe(debtsResult => {
       this.debts = debtsResult['debts'];
       this.memberName = debtsResult['name'];
-      console.log(this.debts);
     });
   }
 

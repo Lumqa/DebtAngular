@@ -72,7 +72,6 @@ export class RegisterComponent implements OnInit {
             .pipe(first())
             .subscribe(
               data => {
-                console.log(data);
                 if (data['errors'] != null) {
                   this.alertService.error(data['errors'][0]['description']);
                   this.loading = false;

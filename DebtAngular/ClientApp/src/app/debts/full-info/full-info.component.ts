@@ -22,8 +22,6 @@ export class FullInfoComponent implements OnInit {
     this.service.fullInfo().pipe(first()).subscribe(debtsResult => {
       this.debts = debtsResult['debts'];
       this.memberNames = debtsResult['memberNames'];
-      console.log(this.debts);
-      console.log(this.memberNames);
     });
   }
 

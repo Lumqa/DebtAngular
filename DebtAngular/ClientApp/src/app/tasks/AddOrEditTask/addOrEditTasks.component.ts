@@ -62,8 +62,8 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       {
       id: [member.id],
       name: [member.name, Validators.required],
-      deposit: [member.deposit, [Validators.required, Validators.min(0)]],
-      debt: [member.debt, [Validators.required, Validators.min(0)]],
+      deposit: [member.deposit, [Validators.required, Validators.min(0), Validators.max(10000000)]],
+      debt: [member.debt, [Validators.required, Validators.min(0), Validators.max(10000000)]],
       taskId: [member.taskId]
       }
     );
@@ -75,7 +75,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
       taskId: [''],
       userId: [''],
       name: ['', Validators.required],
-      sum: ['0', [Validators.required, Validators.min(0)]],
+      sum: ['0', [Validators.required, Validators.min(0), Validators.max(10000000)]],
       members: this.formBuilder.array([])
     });
   }
@@ -104,7 +104,7 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
           sumControl.setErrors({ DebtSumError: true });
         }
         else {
-          sumControl.setErrors(null);
+          sumControl.updateValueAndValidity();
         }
       }
     }
