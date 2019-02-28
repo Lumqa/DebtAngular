@@ -1,0 +1,32 @@
+table td:first-child, th {
+  font-weight: bold;
+}
+
+table {
+  overflow: hidden;
+}
+
+tr:hover {
+  background-color: #ffa;
+}
+
+td, th {
+  position: relative;
+  text-align: center;
+  vertical-align: middle !important;
+  width: 3rem!important;
+  height: 3rem!important;
+  padding: 1rem!important;
+}
+
+  td:hover::after,
+  th:hover::after {
+    content: "";
+    position: absolute;
+    background-color: #ffa!important;
+    left: 0;
+    top: -5000px;
+    height: 10000px;
+    width: 100%;
+    z-index: -1;
+  }
