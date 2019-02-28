@@ -103,7 +103,6 @@ namespace DebtAngular
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            app.UseCookiePolicy();
             app.UseAuthentication();
 
             app.UseMvc(routes =>
