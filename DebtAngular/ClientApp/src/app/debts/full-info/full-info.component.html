@@ -1,24 +1,25 @@
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th></th>
-      <th *ngFor="let member of memberNames">{{member}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let memberOut of memberNames; let idxMemberOut = index">
-      <td>
-        {{memberOut}}
-      </td>
-      <td *ngFor="let memberIn of memberNames; let idxMemberIn = index">
-        {{findValue(memberOut,memberIn)}}
-      </td>
-    </tr>
-</tbody>
-</table>
-
-
-
-
-
+  <div class="card-body">
+    <div id="table" class="table-editable text-sm">
+      <table class="table table-bordered table-responsive-md text-center">
+        <thead class="aqua-gradient white-text">
+          <tr>
+            <th></th>
+            <th *ngFor="let member of memberNames">{{member}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let memberOut of memberNames; let idxMemberOut = index">
+            <td>
+              {{memberOut}}
+            </td>
+            <td *ngFor="let memberIn of memberNames; let idxMemberIn = index">
+              {{findValue(memberOut,memberIn)}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <router-outlet></router-outlet>
+
+

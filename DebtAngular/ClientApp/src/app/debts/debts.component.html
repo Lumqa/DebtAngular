@@ -1,32 +1,35 @@
-<h1>{{memberName}}</h1>
+<div class="card debttable">
+  <h3 class="aqua-gradient card-header text-center font-weight-bold text-uppercase py-4">{{memberName}}</h3>
+  <div class="card-body">
+    <div id="table" class="table-editable text-sm">
+      <table class="table table-bordered table-responsive-md text-center">
+        <thead class="aqua-gradient white-text">
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Money
+            </th>
+          </tr>
+          </thead>
+          <tr *ngFor="let debtor of debts">
 
-<table class="table table-striped table-bordered table-hover">
-  <thead>
-    <tr>
-      <th>
-        Имя
-      </th>
-      <th>
-        Сумма
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let debtor of debts">
+            <td *ngIf="(memberName | lowercase) === (debtor['member1'] | lowercase)">
+              <label>{{debtor['member2']}}</label>
+            </td>
+            <td *ngIf="(memberName | lowercase) === (debtor['member1'] | lowercase)">
+              <label>His debt is <span class="text-monospace green-text">{{debtor['money']}}</span>&nbsp;<mdb-icon fas icon="money-bill-wave" size="lg" class="green-text"></mdb-icon></label>
+            </td>
+            <td *ngIf="!((memberName | lowercase) === (debtor['member1'] | lowercase))">
+              <label>{{debtor['member1']}}</label>
+            </td>
+            <td *ngIf="!((memberName | lowercase) === (debtor['member1'] | lowercase))">
+              <label>Your debt is <span class="text-monospace red-text">{{debtor['money']}}</span>&nbsp;<mdb-icon fas icon="money-bill-wave" size="lg" class="red-text"></mdb-icon></label>
+            </td>
 
-      <td *ngIf="(memberName | lowercase) === (debtor['member1'] | lowercase)">
-        <label>{{debtor['member2']}}</label>
-      </td>
-      <td *ngIf="(memberName | lowercase) === (debtor['member1'] | lowercase)">
-        <label>Тебе должен {{debtor['money']}}</label>
-      </td>
-      <td *ngIf="!((memberName | lowercase) === (debtor['member1'] | lowercase))">
-        <label>{{debtor['member1']}}</label>
-      </td>
-      <td *ngIf="!((memberName | lowercase) === (debtor['member1'] | lowercase))">
-        <label>Ты должен {{debtor['money']}}</label>
-      </td>
-
-    </tr>
-  </tbody>
-</table>
+          </tr>
+      </table>
+    </div>
+  </div>
+</div>

@@ -3,8 +3,8 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
 for details on configuring this project to bundle and minify static web assets. */
 body {
-  padding-top: 50px;
-  padding-bottom: 20px;
+  background: url("/assets/bg.jpg")no-repeat fixed;
+  background-size: cover;
 }
 
 /* Wrapping element */
@@ -45,19 +45,9 @@ body {
   border-color: #d5d5d5;
 }
 
-body {
-  padding-top: 5rem;
-}
-
 .starter-template {
   padding: 3rem 1.5rem;
   text-align: center;
-}
-
-.navbar {
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05) !important;
-  background: #fff !important;
-  padding: 10px 15%;
 }
 
 .text-black {
@@ -66,7 +56,6 @@ body {
 
 .removetask {
   width: 1px;
-  padding: 0 !important;
 }
 
 .removetask > button {
@@ -113,11 +102,13 @@ input[type="checkbox"].input-validation-error {
   width: 217px;
 }
 
-.text-danger-name, .text-danger-sum{
+.text-danger-name, .text-danger-sum {
+  color: #ff3547 !important;
   min-height: 43px;
 }
 .text-danger {
-  font-size: 14px;
+
+  font-size: 15px;
   min-height: 21px;
 }
 
@@ -133,4 +124,61 @@ input[type="checkbox"].input-validation-error {
 .tdmember{
   display: inline-block;
   border: 0!important;
+}
+
+
+@media (min-width: 768px) {
+  .view {
+    overflow: visible;
+    margin-top: -56px;
+  }
+}
+
+.navbar {
+  z-index: 1;
+  background-color: transparent;
+  margin-bottom: 2rem;
+}
+
+
+.top-nav-collapse {
+  background-color: #4285F4;
+}
+
+@media only screen and (max-width: 768px) {
+  .navbar {
+    background-color: #4285F4;
+  }
+}
+
+.md-form .form-control {
+  padding: 0.5rem 0 0.55rem 0!important;
+  }
+
+.btn{
+  border-radius: 3rem!important;
+}
+table .md-form {
+   margin-bottom: 0!important;
+}
+
+.removemember {
+  width: 1px;
+  padding:0!important;
+}
+
+.md-outline{
+  .error-message{
+    margin-top: 10px;
+  }
+}
+.md-outline .form-control {
+  padding: 0.5rem 0.5rem 0.5rem 0.6rem !important;
+}
+
+.debttable label, th{
+  font-size: 20px !important;
+}
+.card-header{
+  color: rgba(255, 255, 255, 0.95)!important;
 }

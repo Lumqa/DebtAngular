@@ -1,87 +1,106 @@
-<div *ngIf="task">
-  <h4 *ngIf="task.id !== '00000000-0000-0000-0000-000000000000'; else elseBlock">Edit {{task.name}}</h4>
-  <ng-template #elseBlock>
-    <h4>Add task {{task.name}}</h4>
-  </ng-template>
-  <form [formGroup]="editTaskForm" (submit)="saveTask(editTaskForm)">
-    <div class="form-inline">
-      <input formControlName="taskId" [(ngModel)]="task.id" type="hidden" />
-      <input formControlName="userId" [(ngModel)]="task.userId" type="hidden" />
-      <div style="margin-right:10px;">
-        <label for="name">Name</label>
-          <div class="form-inline m-2 d-flex flex-column">
-          <input formControlName="name" class="form-control nameInput" [(ngModel)]="task.name" />
-          <label class="text-danger-name"><span class="text-danger" *ngIf="editTaskForm.get('name').touched && editTaskForm.get('name').errors?.required">Name can't be empty.</span></label>
-          </div>
-        </div>
 
-      <div>
-        <label for="sum">Sum</label>
-        <div class="form-inline m-2 d-flex flex-column">
-          <input id="Sum" type="number" formControlName="sum" class="form-control nameInput" [(ngModel)]="task.sum" (keyup)="sumValidator(); changeSum()" />
-          <div class="text-danger-sum">
-            <div *ngIf="editTaskForm.get('sum').touched && editTaskForm.get('sum').errors">
-              <span *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</span>
-              <span *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</span>
-              <span *ngIf="editTaskForm.get('sum').errors?.max">Error, max value 10,000,000.</span>
+<div *ngIf="task">
+
+  <form [formGroup]="editTaskForm" (submit)="saveTask(editTaskForm)">
+    <div class="card">
+      <h3 *ngIf="task.id !== '00000000-0000-0000-0000-000000000000'; else elseBlock" class="blue-gradient card-header text-center font-weight-bold text-uppercase py-4">Edit {{task.name}}</h3>
+      <ng-template #elseBlock>
+        <h3 class="blue-gradient card-header text-center font-weight-bold text-uppercase py-4">Add task {{task.name}}</h3>
+      </ng-template>
+
+      <div class="form-inline">
+        <input formControlName="taskId" [(ngModel)]="task.id" type="hidden" />
+        <input formControlName="userId" [(ngModel)]="task.userId" type="hidden" />
+          <div class="form-inline mt-5 mx-5 d-flex flex-column">
+            <div class="md-form md-outline form-group mt-2 form-lg mb-0">
+              <input mdbInput mdbValidate formControlName="name" id="Name" class="form-control form-control-lg nameInput" [(ngModel)]="task.name" type="text" maxlength="25" />
+              <mdb-error *ngIf="editTaskForm.get('name').touched && editTaskForm.get('name').errors?.required">Name can't be empty.</mdb-error>
+              <mdb-success *ngIf="editTaskForm.get('name').valid && (editTaskForm.get('name').dirty || editTaskForm.get('name').touched)"></mdb-success>
+              <label for="Name">Name</label>
             </div>
-            <span id="errorsum" class="text-danger">
-              <label *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger">Sum of deposits not equal
-                Sum.</label>
-              <label *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal
-                Sum.</label>
+          </div>
+
+
+          <div class="form-inline mt-5 mx-5 d-flex flex-column">
+            <div class="md-form md-outline form-group mt-2 form-lg mb-0">
+              <input mdbInput mdbValidate id="Sum" type="number" formControlName="sum" class="form-control form-control-lg nameInput" [(ngModel)]="task.sum" (keyup)="sumValidator(); changeSum()" />
+              <mdb-error *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</mdb-error>
+              <mdb-error *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</mdb-error>
+              <mdb-error *ngIf="editTaskForm.get('sum').errors?.max">Error, max value 10,000,000.</mdb-error>
+
+              <mdb-error *ngIf="editTaskForm.get('sum').errors?.DepositSumError && editTaskForm.get('sum').errors?.DebtSumError; else elseErrors" class="text-danger"> Sum of deposits not equal Sum. <br />Sum of debt not equal Sum.</mdb-error>
+              <ng-template #elseErrors>
+                <mdb-error *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger"> Sum of deposits not equal Sum.</mdb-error>
+                <mdb-error *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal Sum.</mdb-error>
+              </ng-template>
+
+
+              <mdb-success *ngIf="editTaskForm.get('sum').valid && (editTaskForm.get('sum').dirty || editTaskForm.get('sum').touched)"></mdb-success>
+              <label for="Sum">Sum</label>
+            </div>
+          </div>
+      </div>
+
+      <div class="card-body">
+        <div formArrayName="members">
+          <div id="table" class="table-editable">
+            <span class="table-add float-right mb-3 mr-2">
+              <a class="text-success" (click)="addMember()">
+                <mdb-icon fas icon="plus" size="2x"></mdb-icon>
+              </a>
             </span>
+            <div id="divMembers" class="form-inline mb-3">
+              <button type="button" (click)="addMember()" class="btn btn-primary m-1">Add Member</button>
+              <button type="submit" class="btn btn-success m-1" [disabled]="!editTaskForm.valid">Save</button>
+
+            </div>
+            <table class="table memberstable table-bordered table-responsive-md text-center">
+              <thead class="blue-gradient white-text">
+                <tr>
+                  <th>Name</th>
+                  <th>Deposit</th>
+                  <th>Debt</th>
+                  <th>Remove</th>
+                </tr>
+                </thead>
+                <tr *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
+                  <input type="hidden" formControlName="id" [(ngModel)]="task.members[idx].id" />
+                  <td>
+                    <div class="md-form form-group mt-0">
+                      <input mdbInput mdbValidate formControlName="name" class="name form-control" (keyup)="nameValidator(idx)" [(ngModel)]="task.members[idx].name" type="text" maxlength="15" />
+                      <mdb-error *ngIf="item.get('name').errors?.required">Name can't be empty.</mdb-error>
+                      <mdb-error *ngIf="item.get('name').errors?.match">Duplicate names.</mdb-error>
+                      <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="md-form form-group mt-0">
+                      <input mdbInput mdbValidate type="number" formControlName="deposit" class="deposit form-control" (keyup)="sumValidator()" [(ngModel)]="task.members[idx].deposit" />
+                      <mdb-error *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</mdb-error>
+                      <mdb-error *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</mdb-error>
+                      <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
+                    </div>
+
+                  </td>
+                  <td>
+                    <div class="md-form form-group mt-0">
+                      <input mdbInput mdbValidate type="number" formControlName="debt" class="saveDebt debt form-control" (keyup)="changeDebt(idx)" [(ngModel)]="task.members[idx].debt" />
+                      <mdb-error *ngIf="item.get('debt').errors?.required">Debt can't be empty.</mdb-error>
+                      <mdb-error *ngIf="item.get('debt').errors?.min">Debt can't be negative.</mdb-error>
+                      <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
+                    </div>
+                  </td>
+                  <td class="removemember align-middle">
+                    <span class="table-remove">
+                      <button class="my-0 btn btn-danger btn-rounded btn-sm" color="danger" mdbbtn="" rounded="true" size="sm" type="button" ng-reflect-color="danger" ng-reflect-rounded="true" ng-reflect-size="sm" (click)="deleteMember(idx)">Remove</button>
+                    </span>
+                  </td>
+                </tr>
+            </table>
           </div>
         </div>
         </div>
       </div>
-    <div id="divMembers">
-      <h4>Members</h4>
-      <button type="button" (click)="addMember()" class="btn btn-primary m-1">Add Member</button>
-      <button type="submit" class="btn btn-success m-1" [disabled]="!editTaskForm.valid">Save</button>
-      <table class="memberstable">
-        <tr>
-          <th>Name</th>
-          <th>Deposit</th>
-          <th>Debt</th>
-        </tr>
-      </table>
-      <div formArrayName="members">
-        <div class="form-inline" *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
-          <input type="hidden" formControlName="id" [(ngModel)]="task.members[idx].id" />
-          <div class="form-inline d-flex flex-column">
-            <input formControlName="name" class="form-control m-2 name" (keyup)="nameValidator(idx)" [(ngModel)]="task.members[idx].name"/>
-            <div class="text-danger">
-              <div *ngIf="item.get('name').errors">
-                <span *ngIf="item.get('name').errors?.required">Name can't be empty.</span>
-                <span *ngIf="item.get('name').errors?.match">Duplicate names.</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-inline d-flex flex-column">
-            <input type="number" formControlName="deposit" class="form-control m-2 deposit" (keyup)="sumValidator()" [(ngModel)]="task.members[idx].deposit" />
-            <div class="text-danger">
-              <div *ngIf="item.get('deposit').errors">
-                <span *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</span>
-                <span *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</span>
-                <span *ngIf="item.get('deposit').errors?.max">Error, max value 10,000,000.</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-inline d-flex flex-column">
-            <input type="number" formControlName="debt" class="saveDebt form-control m-2 debt" (keyup)="changeDebt(idx)" [(ngModel)]="task.members[idx].debt"/>
-            <div class="text-danger">
-              <div *ngIf="item.get('debt').errors">
-                <span *ngIf="item.get('debt').errors?.required">Debt can't be empty.</span>
-                <span *ngIf="item.get('debt').errors?.min">Debt can't be negative.</span>
-                <span *ngIf="item.get('debt').errors?.max">Error, max value 10,000,000.</span>
-              </div>
-            </div>
-          </div>
-          <button class="btn btn-danger removemember" (click)="deleteMember(idx)">x</button>
-        </div>
-      </div>
-    </div>
   </form>
 </div>
 

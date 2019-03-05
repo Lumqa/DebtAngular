@@ -1,36 +1,44 @@
-<table class="table table-striped table-bordered table-hover">
-  <thead>
-    <tr>
-      <th>
-        Имя
-      </th>
-      <th>
-        Сумма
-      </th>
-      <th>
-        Участники
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-
-    <tr *ngFor="let item of tasks; let idx = index">
-      <td>
-        <a routerLink="/addOrEditTask" [queryParams]="{'taskId':idx+1}">{{item['name']}}</a>
-      </td>
-      <td>
-        {{item['sum']}}
-      </td>
-      <td>
-        <div *ngFor="let debtor of item['members']" class="mx-1 tdmember">
-          <a routerLink="/debts" [queryParams]="{'memberId':debtor['id']}">{{debtor['name']}}</a>
-        </div>
-      </td>
-      <td class="removetask">
-        <button type="button" (click)="Delete(item)" class="btn btn-danger">×</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<a class="btn btn-primary" routerLink="/addOrEditTask" style="margin-right:10px;">Add new</a>
-<a class="btn btn-info" routerLink="/full-info">Full Debts Info</a>
+<div class="card">
+  <h3 class="blue-gradient card-header text-center font-weight-bold text-uppercase py-4">Tasks</h3>
+  <div class="card-body">
+    <div id="table" class="table-editable">
+      <table class="table table-bordered table-responsive-md text-center">
+        <thead class="blue-gradient white-text">
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Money
+            </th>
+            <th>
+              Members
+            </th>
+            <th>
+              Remove
+            </th>
+          </tr>
+        </thead>
+        <tr *ngFor="let item of tasks; let idx = index">
+          <td>
+            <a routerLink="/addOrEditTask" [queryParams]="{'taskId':idx+1}">{{item['name']}}</a>
+          </td>
+          <td>
+            {{item['sum']}}
+          </td>
+          <td>
+            <div *ngFor="let debtor of item['members']" class="mx-1 tdmember">
+              <a routerLink="/debts" [queryParams]="{'memberId':debtor['id']}">{{debtor['name']}}</a>
+            </div>
+          </td>
+          <td class="removetask">
+            <span class="table-remove">
+              <button type="button" mdbBtn color="danger" rounded="true" size="sm" class="my-0" (click)="Delete(item)">Remove</button>
+            </span>
+          </td>
+        </tr>
+      </table>
+      <a class="btn btn-primary" routerLink="/addOrEditTask" style="margin-right:10px;">Add new</a>
+    </div>
+  </div>
+</div>

@@ -1,30 +1,54 @@
-<h2>Register</h2>
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="form-group required">
-        <label for="email">Email</label>
-        <input type="email" formControlName="email" class="form-control"/>
-        <label *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.required" class="text-danger">Email can't be empty.</label>
-        <label *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.email" class="text-danger" >Invalid email address.</label>
-        
-    </div>
-    <div formGroupName="passwords">
-        <div class="form-group required">
-            <label for="password">Password</label>
-            <input type="password" formControlName="password" class="form-control"/>
-            <label class="text-danger" *ngIf="registerForm.get('passwords.password').touched && registerForm.get('passwords.password').errors?.required">Password can't be empty.</label>
-            <label class="text-danger" *ngIf="registerForm.get('passwords.password').touched && registerForm.get('passwords.password').errors?.minlength">Password must be at least 4 characters.</label>
-        </div>
-        <div class="form-group required">
-            <label for="confirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" formControlName="confirmPassword">
-            <label class="text-danger" *ngIf="registerForm.get('passwords.confirmPassword').touched && registerForm.get('passwords.confirmPassword').errors?.required">ConfirmPassword field can't be empty.</label>
-            <label class="text-danger" *ngIf="registerForm.get('passwords.confirmPassword').touched && registerForm.get('passwords.confirmPassword').errors?.passwordMismatch">Confirm Password does not match.</label>
-        </div>
 
-    </div>
-    <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">Register</button>
-        <img *ngIf="loading" class="pl-3" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        <a routerLink="/login" class="btn btn-link">Cancel</a>
-    </div>
-</form>
+
+<!-- Material form register -->
+<mdb-card>
+
+  <mdb-card-header class="info-color white-text text-center py-4">
+    <h5>
+      <strong>Register</strong>
+    </h5>
+  </mdb-card-header>
+
+  <!--Card content-->
+  <mdb-card-body class="px-lg-5 pt-0">
+
+    <!-- Form -->
+    <form class="text-center" style="color: #757575;" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-row justify-content-center">
+        <div class="col-12">
+          <div class="md-form">
+            <label for="email">Email</label>
+            <input type="email" formControlName="email" id="email" class="form-control" mdbInput />
+          </div>
+          <label *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.required" class="text-danger">Email can't be empty.</label>
+          <label *ngIf="registerForm.get('email').touched && registerForm.get('email').errors?.email" class="text-danger">Invalid email address.</label>
+        </div>
+        <div class="col-12" formGroupName="passwords">
+          <div class="md-form">
+            <label for="password">Password</label>
+            <input type="password" formControlName="password" id="password" class="form-control" mdbInput />
+          </div>
+          <label class="text-danger" *ngIf="registerForm.get('passwords.password').touched && registerForm.get('passwords.password').errors?.required">Password can't be empty.</label>
+          <label class="text-danger" *ngIf="registerForm.get('passwords.password').touched && registerForm.get('passwords.password').errors?.minlength">Password must be at least 4 characters.</label>
+        </div>
+        <div class="col-12" formGroupName="passwords">
+          <div class="md-form">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" mdbInput>
+          </div>
+          <label class="text-danger" *ngIf="registerForm.get('passwords.confirmPassword').touched && registerForm.get('passwords.confirmPassword').errors?.required">ConfirmPassword field can't be empty.</label>
+          <label class="text-danger" *ngIf="registerForm.get('passwords.confirmPassword').touched && registerForm.get('passwords.confirmPassword').errors?.passwordMismatch">Confirm Password does not match.</label>
+        </div>
+      </div>
+
+      <!-- Sign up button -->
+      <button mdbBtn gradient="blue" outline="true" block="true" class="my-3 waves-effect z-depth-1" mdbWavesEffect type="submit">Sign in</button>
+
+    </form>
+    <!-- Form -->
+
+  </mdb-card-body>
+
+</mdb-card>
+<!-- Material form register -->

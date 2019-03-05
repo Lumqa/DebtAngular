@@ -1,35 +1,43 @@
-<!-- nav -->
-<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow border-bottom">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link text-black" routerLink="tasks">Tasks</a>
-      </li>
-    </ul>
-    <div *ngIf="currentUser; else elseBlock">
-      <ul class="nav navbar-nav">
-        <li>
-          <a class="text-black mx-2">{{currentUser.email}}</a>
+<header class="h-100">
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-light" [containerInside]="true">
+    <mdb-navbar-brand>
+      <a class="logo navbar-brand" href="#">
+        <strong>Debts</strong>
+      </a>
+    </mdb-navbar-brand>
+    <links>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item  waves-light">
+          <a class="nav-link text-black" routerLink="tasks">Tasks</a>
         </li>
-        <li>
-          <a class="text-black mx-2" (click)="logout()">Logout</a>
+
+        <li class="nav-item  waves-light">
+          <a class="nav-link text-black" routerLink="full-info">DebtInfo</a>
         </li>
       </ul>
-    </div>
-    <ng-template #elseBlock>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a class="text-black mx-2" routerLink="/login">Login</a></li>
-        <li><a class="text-black mx-2" routerLink="/register">Register</a></li>
-      </ul>
-    </ng-template>
+      <div class="md-0 m-0 " *ngIf="currentUser; else elseBlock">
+        <ul class="nav navbar-nav">
+          <li>
+            <a class="text-black mx-2">{{currentUser.email}}</a>
+          </li>
+          <li>
+            <a class="text-black mx-2" (click)="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+      <ng-template #elseBlock>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a class="text-black mx-2" routerLink="/login">Login</a></li>
+          <li><a class="text-black mx-2" routerLink="/register">Register</a></li>
+        </ul>
+      </ng-template>
+    </links>
+    
+  </mdb-navbar>
 
-  </div>
-</nav>
+</header>
+   
+
 
 <!-- main app container -->
 <main role="main" class="container">

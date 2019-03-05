@@ -17,6 +17,7 @@ import { DebtsComponent } from './debts/debts.component';
 import { AddOrEditTasksComponent } from './tasks/AddOrEditTask/addOrEditTasks.component';
 import { NotFoundComponent } from './notfound/notfound.component';
 import { FullInfoModule } from './debts/full-info/full-info.module';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { FullInfoModule } from './debts/full-info/full-info.module';
         HttpClientModule,
         routing,
     FormsModule,
+    MDBBootstrapModule,
     ],
     declarations: [
         AppComponent,
