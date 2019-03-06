@@ -34,7 +34,10 @@
 
 
       <!-- Sign in button -->
-      <button mdbBtn gradient="blue" outline="true" block="true" class="my-3 waves-effect z-depth-1" mdbWavesEffect type="submit">Sign in</button>
+      <button mdbBtn gradient="blue" outline="true" block="true" class="my-3 waves-effect z-depth-1" mdbWavesEffect type="submit" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Sign in
+      </button>
 
       <!-- Register -->
       <p>

@@ -44,14 +44,14 @@
       <div class="card-body">
         <div formArrayName="members">
           <div id="table" class="table-editable">
-            <span class="table-add float-right mb-3 mr-2">
-              <a class="text-success" (click)="addMember()">
-                <mdb-icon fas icon="plus" size="2x"></mdb-icon>
-              </a>
-            </span>
             <div id="divMembers" class="form-inline mb-3">
-              <button type="button" (click)="addMember()" class="btn btn-primary m-1">Add Member</button>
-              <button type="submit" class="btn btn-success m-1" [disabled]="!editTaskForm.valid">Save</button>
+              <button type="button" (click)="addMember()" class="btn btn-primary m-1" mdbWavesEffect>Add Member</button>
+              <button [className]="editTaskForm.valid ? 'btn-success btn m-1' : 'btn-danger btn m-1'" type="submit" [disabled]="!editTaskForm.valid" mdbWavesEffect (click)="loading = true">
+                Save
+                <span *ngIf="editTaskForm.valid && loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <mdb-icon *ngIf="editTaskForm.valid && !loading" fas icon="check"></mdb-icon>
+                <mdb-icon *ngIf="!editTaskForm.valid" fas icon="times"></mdb-icon>
+              </button>
 
             </div>
             <table class="table memberstable table-bordered table-responsive-md text-center">
@@ -62,41 +62,46 @@
                   <th>Debt</th>
                   <th>Remove</th>
                 </tr>
-                </thead>
-                <tr *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
-                  <input type="hidden" formControlName="id" [(ngModel)]="task.members[idx].id" />
-                  <td>
-                    <div class="md-form form-group mt-0">
-                      <input mdbInput mdbValidate formControlName="name" class="name form-control" (keyup)="nameValidator(idx)" [(ngModel)]="task.members[idx].name" type="text" maxlength="15" />
-                      <mdb-error *ngIf="item.get('name').errors?.required">Name can't be empty.</mdb-error>
-                      <mdb-error *ngIf="item.get('name').errors?.match">Duplicate names.</mdb-error>
-                      <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="md-form form-group mt-0">
-                      <input mdbInput mdbValidate type="number" formControlName="deposit" class="deposit form-control" (keyup)="sumValidator()" [(ngModel)]="task.members[idx].deposit" />
-                      <mdb-error *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</mdb-error>
-                      <mdb-error *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</mdb-error>
-                      <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
-                    </div>
+              </thead>
+              <tr *ngFor="let item of  taskMembers.controls; let idx = index" [formGroupName]="idx">
+                <input type="hidden" formControlName="id" [(ngModel)]="task.members[idx].id" />
+                <td>
+                  <div class="md-form form-group mt-0">
+                    <input mdbInput mdbValidate formControlName="name" class="name form-control" (keyup)="nameValidator(idx)" [(ngModel)]="task.members[idx].name" type="text" maxlength="15" />
+                    <mdb-error *ngIf="item.get('name').errors?.required">Name can't be empty.</mdb-error>
+                    <mdb-error *ngIf="item.get('name').errors?.match">Duplicate names.</mdb-error>
+                    <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
+                  </div>
+                </td>
+                <td>
+                  <div class="md-form form-group mt-0">
+                    <input mdbInput mdbValidate type="number" formControlName="deposit" class="deposit form-control" (keyup)="sumValidator()" [(ngModel)]="task.members[idx].deposit" />
+                    <mdb-error *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</mdb-error>
+                    <mdb-error *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</mdb-error>
+                    <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
+                  </div>
 
-                  </td>
-                  <td>
-                    <div class="md-form form-group mt-0">
-                      <input mdbInput mdbValidate type="number" formControlName="debt" class="saveDebt debt form-control" (keyup)="changeDebt(idx)" [(ngModel)]="task.members[idx].debt" />
-                      <mdb-error *ngIf="item.get('debt').errors?.required">Debt can't be empty.</mdb-error>
-                      <mdb-error *ngIf="item.get('debt').errors?.min">Debt can't be negative.</mdb-error>
-                      <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
-                    </div>
-                  </td>
-                  <td class="removemember align-middle">
-                    <span class="table-remove">
-                      <button class="my-0 btn btn-danger btn-rounded btn-sm" color="danger" mdbbtn="" rounded="true" size="sm" type="button" ng-reflect-color="danger" ng-reflect-rounded="true" ng-reflect-size="sm" (click)="deleteMember(idx)">Remove</button>
-                    </span>
-                  </td>
-                </tr>
+                </td>
+                <td>
+                  <div class="md-form form-group mt-0">
+                    <input mdbInput mdbValidate type="number" formControlName="debt" class="saveDebt debt form-control" (keyup)="changeDebt(idx)" [(ngModel)]="task.members[idx].debt" />
+                    <mdb-error *ngIf="item.get('debt').errors?.required">Debt can't be empty.</mdb-error>
+                    <mdb-error *ngIf="item.get('debt').errors?.min">Debt can't be negative.</mdb-error>
+                    <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
+                  </div>
+                </td>
+                <td class="removemember align-middle">
+                  <span class="table-remove">
+                    <button class="my-0 btn btn-danger btn-rounded btn-sm" color="danger" mdbbtn="" rounded="true" size="sm" type="button" ng-reflect-color="danger" ng-reflect-rounded="true" ng-reflect-size="sm" (click)="deleteMember(idx)">Remove</button>
+                  </span>
+                </td>
+              </tr>
             </table>
+            <span class="table-add float-left mb-3 mr-2">
+              <a class="text-success" (click)="addMember()">
+                <mdb-icon fas icon="plus" size="2x"></mdb-icon>
+              </a>
+            </span>
           </div>
         </div>
         </div>

@@ -1,0 +1,10 @@
+
+.colgroup {
+  background: linear-gradient(183deg, #ff6ec4, #7873f5) !important;
+}
+
+td:first-child {
+  font-weight: bold;
+  font-size: 20px;
+  color: white;
+}

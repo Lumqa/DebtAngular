@@ -1,14 +1,15 @@
   <div class="card-body">
     <div id="table" class="table-editable text-sm">
       <table class="table table-bordered table-responsive-md text-center">
-        <thead class="aqua-gradient white-text">
+        <colgroup span="1" class="colgroup"></colgroup>
+        <thead class="aqua-gradient text-white">
           <tr>
             <th></th>
             <th *ngFor="let member of memberNames">{{member}}</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let memberOut of memberNames; let idxMemberOut = index">
+        <tr *ngFor="let memberOut of memberNames; let idxMemberOut = index">
             <td>
               {{memberOut}}
             </td>
@@ -21,5 +22,3 @@
     </div>
   </div>
 <router-outlet></router-outlet>
-
-
