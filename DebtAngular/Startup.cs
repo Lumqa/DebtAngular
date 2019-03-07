@@ -37,6 +37,11 @@ namespace DebtAngular
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -79,7 +84,7 @@ namespace DebtAngular
             services.AddTransient<ITaskRepo, TaskRepo>();
             services.AddTransient<IDebtRepo, DebtRepo>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options => {options.AllowValidatingTopLevelNodes = false; }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

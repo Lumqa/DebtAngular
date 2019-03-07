@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
@@ -25,10 +24,11 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
         ReactiveFormsModule,
         HttpClientModule,
         routing,
-    FormsModule,
-    MDBBootstrapModule,
+        FormsModule,
+    MDBBootstrapModule.forRoot()
+
     ],
-    declarations: [
+  declarations: [
         AppComponent,
         AlertComponent,
         NotFoundComponent,

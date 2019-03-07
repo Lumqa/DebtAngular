@@ -6,6 +6,8 @@ using DebtAngular.Data.Repositories.Abstract;
 using DebtAngular.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 
 namespace DebtAngular.Controllers
@@ -52,24 +54,31 @@ namespace DebtAngular.Controllers
         [HttpPost]
         public IActionResult AddOrEditTask([FromBody] TaskModel taskModel)
         {
+
+            if (taskModel.Members.Select(m => m.Name).Count() != taskModel.Members.Select(m => m.Name).Distinct().Count())
+            {
+                ModelState.AddModelError("Name", "Duplicate names");
+            }
+
             if (ModelState.IsValid)
             {
                 CalculateDebts(ref taskModel);
                 _taskRepo.Save(taskModel, UserId);
                 return RedirectToAction("Index");
             }
-            return View(taskModel);
+            List<string> allErrors = ModelState.Values.SelectMany(v => v.Errors.Select(d=>d.ErrorMessage)).Distinct().ToList();
+            return Ok(allErrors);
         }
 
         public void CalculateDebts(ref TaskModel taskModel)
         {
             List<MemberModel> memberList = taskModel.Members.ToList();
 
-            Dictionary<string, double> creditors = new Dictionary<string, double>();
-            Dictionary<string, double> debtors = new Dictionary<string, double>();
+            Dictionary<string, double?> creditors = new Dictionary<string, double?>();
+            Dictionary<string, double?> debtors = new Dictionary<string, double?>();
             foreach (var member in memberList)
             {
-                double balance = Math.Round(member.Debt - member.Deposit,2);
+                double balance = Math.Round((double)member.Debt - (double)member.Deposit, 2);
                 if (balance > 0)
                 {
                     debtors.Add(member.Name, balance);
@@ -93,13 +102,13 @@ namespace DebtAngular.Controllers
                 {
                     var creditor = creditors.ElementAt(credIter);
                     var debtor = debtors.ElementAt(debtorIter);
-                    debt = Math.Min(Math.Abs(creditor.Value), debtor.Value);
-                    debtors[debtor.Key] = Math.Round(debtors[debtor.Key] - debt, 2);
-                    creditors[creditor.Key] = Math.Round(creditors[creditor.Key] + debt,2);
+                    debt = Math.Min(Math.Abs((double)creditor.Value), (double)debtor.Value);
+                    debtors[debtor.Key] = Math.Round((double)debtors[debtor.Key] - debt, 2);
+                    creditors[creditor.Key] = Math.Round((double)creditors[creditor.Key] + debt, 2);
 
                     debtsTable.Add(new DebtModel
                     {
-                        Id=Guid.Empty.ToString(),
+                        Id = Guid.Empty.ToString(),
                         Member1 = creditor.Key,
                         Member2 = debtor.Key,
                         Money = debt,
@@ -118,7 +127,7 @@ namespace DebtAngular.Controllers
             taskModel.Debts = debtsTable;
         }
 
-        private void DeleteDebtors(ref Dictionary<string, double> debtors)
+        private void DeleteDebtors(ref Dictionary<string, double?> debtors)
         {
             for (int debtIter = 0; debtIter < debtors.Count; debtIter++)
             {

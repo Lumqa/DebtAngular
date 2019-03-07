@@ -8,37 +8,37 @@
         <h3 class="blue-gradient card-header text-center font-weight-bold text-uppercase py-4">Add task {{task.name}}</h3>
       </ng-template>
 
-      <div class="form-inline" mousemove="console.log('qwe');">
+      <div class="form-inline">
         <input formControlName="taskId" [(ngModel)]="task.id" type="hidden" />
         <input formControlName="userId" [(ngModel)]="task.userId" type="hidden" />
-          <div class="form-inline mt-5 mx-5 d-flex flex-column">
-            <div class="md-form md-outline form-group mt-2 form-lg mb-0"  (focus)="sumValidator();">
-              <input mdbInput mdbValidate formControlName="name" id="Name" class="form-control form-control-lg nameInput" [(ngModel)]="task.name" type="text" maxlength="25" />
-              <mdb-error *ngIf="editTaskForm.get('name').touched && editTaskForm.get('name').errors?.required">Name can't be empty.</mdb-error>
-              <mdb-success *ngIf="editTaskForm.get('name').valid && (editTaskForm.get('name').dirty || editTaskForm.get('name').touched)"></mdb-success>
-              <label for="Name">Name</label>
-            </div>
+        <div class="form-inline mt-5 mx-5 d-flex flex-column">
+          <div class="md-form md-outline form-group mt-2 form-lg mb-0" (focus)="sumValidator();">
+            <input mdbInput mdbValidate formControlName="name" id="Name" class="form-control form-control-lg nameInput" [(ngModel)]="task.name" type="text" maxlength="25" />
+            <mdb-error *ngIf="editTaskForm.get('name').touched && editTaskForm.get('name').errors?.required">Name can't be empty.</mdb-error>
+            <mdb-success *ngIf="editTaskForm.get('name').valid && (editTaskForm.get('name').dirty || editTaskForm.get('name').touched)"></mdb-success>
+            <label for="Name">Name</label>
           </div>
+        </div>
 
 
-          <div class="form-inline mt-5 mx-5 d-flex flex-column" (focus)="sumValidator();">
-            <div class="md-form md-outline form-group mt-2 form-lg mb-0">
-              <input mdbInput mdbValidate id="Sum" type="number" formControlName="sum" class="form-control form-control-lg nameInput" [(ngModel)]="task.sum" (keyup.arrowup)="sumValidator(); changeSum();" (keyup)="sumValidator(); changeSum();" (click)="sumValidator()" (input)="sumValidator(); changeSum();" (focusout)="sumValidator();" (mouseleave)="sumValidator();"/>
-              <mdb-error *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</mdb-error>
-              <mdb-error *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</mdb-error>
-              <mdb-error *ngIf="editTaskForm.get('sum').errors?.max">Error, max value 10,000,000.</mdb-error>
+        <div class="form-inline mt-5 mx-5 d-flex flex-column" (focus)="sumValidator();">
+          <div class="md-form md-outline form-group mt-2 form-lg mb-0">
+            <input mdbInput mdbValidate id="Sum" type="number" formControlName="sum" class="form-control form-control-lg nameInput" [(ngModel)]="task.sum" (keyup.arrowup)="sumValidator(); changeSum();" (keyup)="sumValidator(); changeSum();" (click)="sumValidator()" (input)="sumValidator(); changeSum();" (focusout)="sumValidator();" (mouseleave)="sumValidator();" />
+            <mdb-error *ngIf="editTaskForm.get('sum').errors?.required">Sum can't be empty.</mdb-error>
+            <mdb-error *ngIf="editTaskForm.get('sum').errors?.min">The Sum can't be negative.</mdb-error>
+            <mdb-error *ngIf="editTaskForm.get('sum').errors?.max">Error, max value 10,000,000.</mdb-error>
 
-              <mdb-error *ngIf="editTaskForm.get('sum').errors?.DepositSumError && editTaskForm.get('sum').errors?.DebtSumError; else elseErrors" class="text-danger"> Sum of deposits not equal Sum. <br />Sum of debt not equal Sum.</mdb-error>
-              <ng-template #elseErrors>
-                <mdb-error *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger"> Sum of deposits not equal Sum.</mdb-error>
-                <mdb-error *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal Sum.</mdb-error>
-              </ng-template>
+            <mdb-error *ngIf="editTaskForm.get('sum').errors?.DepositSumError && editTaskForm.get('sum').errors?.DebtSumError; else elseErrors" class="text-danger"> Sum of deposits not equal Sum. <br />Sum of debt not equal Sum.</mdb-error>
+            <ng-template #elseErrors>
+              <mdb-error *ngIf="editTaskForm.get('sum').errors?.DepositSumError" class="text-danger"> Sum of deposits not equal Sum.</mdb-error>
+              <mdb-error *ngIf="editTaskForm.get('sum').errors?.DebtSumError" class="text-danger">Sum of debt not equal Sum.</mdb-error>
+            </ng-template>
 
 
-              <mdb-success *ngIf="editTaskForm.get('sum').valid && (editTaskForm.get('sum').dirty || editTaskForm.get('sum').touched)"></mdb-success>
-              <label for="Sum">Sum</label>
-            </div>
+            <mdb-success *ngIf="editTaskForm.get('sum').valid && (editTaskForm.get('sum').dirty || editTaskForm.get('sum').touched)"></mdb-success>
+            <label for="Sum">Sum</label>
           </div>
+        </div>
       </div>
 
       <div class="card-body">
@@ -46,10 +46,10 @@
           <div id="table" class="table-editable">
             <div id="divMembers" class="form-inline mb-3">
               <button type="button" (click)="addMember()" class="btn btn-primary m-1" mdbWavesEffect>Add Member</button>
-              <button [className]="editTaskForm.valid ? 'btn-success btn m-1' : 'btn-danger btn m-1'" type="submit" [disabled]="!editTaskForm.valid" mdbWavesEffect (click)="loading = true">
+              <button [className]="editTaskForm.valid ? 'btn-success btn m-1 animated pulse' : 'btn-danger btn m-1 animated shake'" type="submit" [disabled]="!editTaskForm.valid" mdbWavesEffect (click)="loading = true">
                 Save
-                <span *ngIf="editTaskForm.valid && loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                <mdb-icon *ngIf="editTaskForm.valid && !loading" fas icon="check"></mdb-icon>
+                <!--<span *ngIf="editTaskForm.valid && loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>-->
+                <mdb-icon *ngIf="editTaskForm.valid" fas icon="check"></mdb-icon>
                 <mdb-icon *ngIf="!editTaskForm.valid" fas icon="times"></mdb-icon>
               </button>
 
@@ -79,6 +79,7 @@
                     <input mdbInput mdbValidate type="number" formControlName="deposit" class="deposit form-control" (keyup)="sumValidator()" [(ngModel)]="task.members[idx].deposit" />
                     <mdb-error *ngIf="item.get('deposit').errors?.required">Deposit can't be empty.</mdb-error>
                     <mdb-error *ngIf="item.get('deposit').errors?.min">Deposit can't be negative.</mdb-error>
+                    <mdb-error *ngIf="item.get('deposit').errors?.max">Error, max value 10,000,000.</mdb-error>
                     <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
                   </div>
 
@@ -88,6 +89,7 @@
                     <input mdbInput mdbValidate type="number" formControlName="debt" class="saveDebt debt form-control" (keyup)="changeDebt(idx)" [(ngModel)]="task.members[idx].debt" />
                     <mdb-error *ngIf="item.get('debt').errors?.required">Debt can't be empty.</mdb-error>
                     <mdb-error *ngIf="item.get('debt').errors?.min">Debt can't be negative.</mdb-error>
+                    <mdb-error *ngIf="item.get('debt').errors?.max">Error, max value 10,000,000.</mdb-error>
                     <mdb-success *ngIf="item.get('name').valid && (item.get('name').dirty || item.get('name').touched)"></mdb-success>
                   </div>
                 </td>
@@ -105,8 +107,41 @@
             </span>
           </div>
         </div>
-        </div>
       </div>
+    </div>
   </form>
 </div>
+<button (click)="frame.show()" class="d-none errormodal"></button>
 
+<div mdbModal #frame="mdbModal" class="modal fade" id="frameModalTop" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-notify modal-danger" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <p class="heading lead">Bad request</p>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="frame.hide()">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="text-center">
+          <i class="fas fa-times fa-4x mb-3 animated rotateIn "></i>
+          <p class="errormodalmessage text-danger">
+          </p>
+        </div>
+      </div>
+
+      <!--Footer-->
+      <div class="modal-footer justify-content-center">
+        <a type="button" mdbBtn color="danger" outline="true" class="waves-effect" mdbWavesEffect (click)="frame.hide(); sumValidator(); changeSum();"
+           data-dismiss="modal">Ok</a>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>

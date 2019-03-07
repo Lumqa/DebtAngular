@@ -8,7 +8,7 @@ namespace DebtAngular.Models
     public class Task : CommonModel
     {
         public string Name { get; set; }
-        public double Sum { get; set; }
+        public double? Sum { get; set; }
 
         public string UserId { get; set; }
 

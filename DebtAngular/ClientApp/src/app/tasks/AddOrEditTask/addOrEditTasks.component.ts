@@ -1,11 +1,13 @@
 import { Member } from './../../_models/member';
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { TaskService } from './../../_services';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidationErrors } from '@angular/forms';
-
 import { Task } from './../../_models';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { error } from '@angular/compiler/src/util';
+import { forEach } from '@angular/router/src/utils/collection';
 declare var task: any;
 
 
@@ -147,8 +149,28 @@ export class AddOrEditTasksComponent implements OnInit, OnChanges {
   }
 
   saveTask(fg:FormGroup) {
-    this.taskService.save(this.task).subscribe(() => this.router.navigate(['tasks']));
+    this.taskService.save(this.task).subscribe(
+      response => {
+        if (!response[0]['id']) {
+          var item = document.getElementsByClassName('errormodalmessage')[0];
+          item.innerHTML = "";
+          var str = "";
+          for(let index in response)
+          {
+            str += response[index] + '<br>';
+          }
+          item.innerHTML = str;
+          let element: HTMLElement = document.getElementsByClassName('errormodal')[0] as HTMLElement;
+          element.click()
+        }
+        else {
+
+          this.router.navigate(['tasks'])
+        }
+      });
   }
+
+ 
 
   //JS OPERATIONS
    changeSum() {
