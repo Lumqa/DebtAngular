@@ -16,7 +16,7 @@ const appRoutes: Routes = [
     { path: 'debts', component: DebtsComponent, canActivate: [AuthGuard] },
     { path: 'addOrEditTask', component: AddOrEditTasksComponent, canActivate: [AuthGuard] },
     { path: '404', component: NotFoundComponent },
-    { path: 'full-info', loadChildren: './debts/full-info/full-info.module#FullInfoModule' },
+    { path: 'full-info', loadChildren: './debts/full-info/full-info.module#FullInfoModule', canActivate: [AuthGuard] },
 
     // otherwise redirect to home
   { path: '**', redirectTo: '404' }
