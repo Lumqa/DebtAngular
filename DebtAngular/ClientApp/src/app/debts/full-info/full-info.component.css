@@ -3,9 +3,9 @@ table td:first-child, th {
 }
 
 table {
+  margin-bottom: 0;
   overflow: hidden;
 }
-
 tr:hover {
   background-color: rgba(0, 234, 255, 0.15)!important;
 }
@@ -31,15 +31,16 @@ td::before {
   z-index: -10;
 }
 
-td:hover::after, th:hover::after {
+td:hover::after,
+th:hover::after {
   content: "";
   position: absolute;
-  background: rgba(0, 234, 255, 0.15) !important;
+  background-color: rgba(0, 234, 255, 0.15) !important;
   left: 0;
   top: -5000px;
   height: 10000px;
   width: 100%;
-  z-index: -10;
+  z-index: -1;
 }
 
 .colgroup {
