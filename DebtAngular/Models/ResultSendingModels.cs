@@ -26,12 +26,12 @@ namespace DebtAngular.Models
         {
             get
             {
-                double? sum = 0;
+                decimal? sum = 0;
                 foreach (var item in Members)
                 {
-                    sum += item.Deposit;
+                    if (item.Deposit != null) sum += (decimal) item.Deposit;
                 }
-                return sum;
+                return (double)sum;
             }
 
         }
@@ -39,12 +39,12 @@ namespace DebtAngular.Models
         {
             get
             {
-                double? sum = 0;
+                decimal? sum = 0;
                 foreach (var item in Members)
                 {
-                    sum += item.Debt;
+                    if (item.Debt != null) sum += (decimal) item.Debt;
                 }
-                return sum;
+                return (double)sum;
             }
 
         }

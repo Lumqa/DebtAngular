@@ -17,18 +17,18 @@
       </ul>
       <div class="md-0 m-0 " *ngIf="currentUser; else elseBlock">
         <ul class="nav navbar-nav">
-          <li>
-            <a class="text-black mx-2">{{currentUser.email}}</a>
+          <li class="nav-item">
+            <a class="text-black nav-link">{{currentUser.email}}</a>
           </li>
-          <li>
-            <a class="text-black mx-2" (click)="logout()">Logout</a>
+          <li class="nav-item">
+            <a class="text-black nav-link" (click)="logout()">Logout</a>
           </li>
         </ul>
       </div>
       <ng-template #elseBlock>
         <ul class="nav navbar-nav navbar-right">
-          <li><a class="text-black mx-2" routerLink="/login">Login</a></li>
-          <li><a class="text-black mx-2" routerLink="/register">Register</a></li>
+          <li class="nav-item"><a class="text-black nav-link" routerLink="/login">Login</a></li>
+          <li class="nav-item"><a class="text-black nav-link" routerLink="/register">Register</a></li>
         </ul>
       </ng-template>
     </links>

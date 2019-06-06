@@ -1,55 +1,63 @@
 
 <!-- Material form login -->
-<mdb-card>
 
-  <mdb-card-header class="info-color white-text text-center py-4">
-    <h5>
-      <strong>Sign in</strong>
-    </h5>
-  </mdb-card-header>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+          <mdb-card>
+
+            <mdb-card-header class="info-color white-text text-center py-4">
+              <h5>
+                <strong>Sign in</strong>
+              </h5>
+            </mdb-card-header>
 
 
-  <!--Card content-->
-  <mdb-card-body class="px-lg-5 pt-0">
+            <!--Card content-->
+            <mdb-card-body class="px-lg-5 pt-0">
 
-    <!-- Form -->
-    <form class="text-center" style="color: #757575;" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <!-- Form -->
+              <form class="text-center" style="color: #757575;" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-      <!-- Email -->
-      <div class="md-form">
-        <input type="email" id="materialLoginFormEmail" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" mdbInput>
-        <label for="materialLoginFormEmail">E-mail</label>
+                <!-- Email -->
+                <div class="md-form">
+                  <input type="email" id="materialLoginFormEmail" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" mdbInput>
+                  <label for="materialLoginFormEmail">E-mail</label>
+                </div>
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                  <div *ngIf="f.email.errors.required">Email is required</div>
+                </div>
+                <!-- Password -->
+                <div class="md-form">
+                  <input type="password" id="materialLoginFormPassword" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" mdbInput>
+                  <label for="materialLoginFormPassword">Password</label>
+                </div>
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                  <div *ngIf="f.password.errors.required">Password is required</div>
+                </div>
+
+
+                <!-- Sign in button -->
+                <button mdbBtn gradient="blue" outline="true" block="true" class="my-3 waves-effect z-depth-1" mdbWavesEffect type="submit" [disabled]="loading">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Sign in
+                </button>
+
+                <!-- Register -->
+                <p>
+                  Not a member?
+                  <a routerLink="//register">Register</a>
+                </p>
+
+
+              </form>
+              <!-- Form -->
+
+            </mdb-card-body>
+
+          </mdb-card>
+          <!-- Material form login -->
       </div>
-      <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-        <div *ngIf="f.email.errors.required">Email is required</div>
-      </div>
-      <!-- Password -->
-      <div class="md-form">
-        <input type="password" id="materialLoginFormPassword" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" mdbInput>
-        <label for="materialLoginFormPassword">Password</label>
-      </div>
-      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-        <div *ngIf="f.password.errors.required">Password is required</div>
-      </div>
-
-
-      <!-- Sign in button -->
-      <button mdbBtn gradient="blue" outline="true" block="true" class="my-3 waves-effect z-depth-1" mdbWavesEffect type="submit" [disabled]="loading">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        Sign in
-      </button>
-
-      <!-- Register -->
-      <p>
-        Not a member?
-        <a routerLink="//register">Register</a>
-      </p>
-
-
-    </form>
-    <!-- Form -->
-
-  </mdb-card-body>
-
-</mdb-card>
-<!-- Material form login -->
+    </div>
+  </div>
